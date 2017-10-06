@@ -1,5 +1,5 @@
 #define INF 1<<30
-#define LINF 1LL60
+#define LINF 1LL<<60
 
 struct edge {
 	int to; // 行き先
@@ -15,7 +15,7 @@ vector<int> used; // DFSですでに調べたらフラグ
 // fromからtoへ向かう容量capの辺をグラフに追加する
 void add_edge(int from, int to, int cap) {
 	G[from].push_back(edge(to, cap, G[to].size()));
-	G[to].push_back(edge(from, cap, G[to].size() - 1));
+	G[to].push_back(edge(from, 0, G[to].size() - 1));
 }
 
 // 増加パスをDFSで探す

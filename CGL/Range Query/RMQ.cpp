@@ -12,7 +12,7 @@ struct SegTree {
 	SegTree(int _N) {
 		N = 1;
 		while (N < _N) N *= 2;
-		node.resize(2 * N - 1, INF);
+		node.resize(2 * N - 1, init_v);
 	}
 
 	void update(int k, ll val) {
@@ -24,7 +24,7 @@ struct SegTree {
 		}
 	}
 	ll query(int a, int b, int k, int l, int r) {
-		if (r <= a || b <= l) return INF;
+		if (r <= a || b <= l) return init_v;
 		if (a <= l && r <= b) return node[k];
 		else {
 			ll vl = query(a, b, 2 * k + 1, l, (l + r) / 2);

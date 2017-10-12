@@ -23,24 +23,3 @@ struct UnionFind {
 	inline int count(int x) { return -par[find(x)]; }
 };
 
-/* example : http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=DSL_1_A&lang=jp */
-int main() {
-	cin.tie(0); ios::sync_with_stdio(false);
-	ll n, q; cin >> n >> q;
-	UnionFind uf(n);
-	for (int i = 0; i < q;i++) {
-		ll com, x, y; cin >> com >> x >> y;
-		if (com == 0) {
-			uf.unite(x, y);
-		}
-		else if (com == 1) {
-			if (uf.same(x, y)) {
-				cout << 1 << endl;
-			}
-			else {
-				cout << 0 << endl;
-			}
-		}
-	}
-	return 0;
-}

@@ -34,7 +34,7 @@ struct SegTree {
 			return node[k]; // updateでは全体の中の最小を見つける必要があるため, [l,r)外になっても値を参照
 		}
 		if (a <= l && r <= b) {
-			lazy[k] = x;　
+			lazy[k] = x;
 			lazy_evaluate(k);
 			return node[k];
 		}

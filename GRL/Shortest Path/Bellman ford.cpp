@@ -37,7 +37,7 @@ public:
 				for (auto e : G[v]) {
 					if (dist[v] != INF && dist[e.v] > dist[v] + e.cost) {
 						dist[e.v] = dist[v] + e.cost;
-						if (i == V - 1) return true; // •Â˜HŒŸo
+						if (i == V - 1) return true; //•Â˜HŒŸo
 					}
 				}
 			}

@@ -6,6 +6,7 @@ typedef pair<ll, ll> pll;
 #define INF 1<<30
 #define LINF 1LL<<60
 
+
 struct edge{
     ll u;
     ll v;
@@ -39,23 +40,24 @@ int main(void) {
         T[t].emplace_back(edge(t,s,w));
     }
     
-    
     /*
-     木の直径：任意の一点から各点への最短距離を求める。次に、求めた最短距離の中で最も最長な点から再度各点への最短距離を求める
-             求めた最短距離のうち最長な長さが直径
+     各点での木の高さ：木の直径を求める、その直径に対応する点をu,vとすると、任意の点iからの高さはmax(uからの距離, vからの距離)
      */
     ll root = 0;
     ll v1,v2;
-    ll max_dist;
-    vector<ll> dist(n,INF);
-    dijkstra(root, n, T, dist);
-    v1 = max_element(dist.begin(), dist.end()) - dist.begin();
+    vector<ll> dist1(n,INF);
+    dijkstra(root, n, T, dist1);
+    v1 = max_element(dist1.begin(), dist1.end()) - dist1.begin();
+
+    vector<ll> dist2(n,INF);
+    dijkstra(v1, n, T, dist2);
+    v2 = max_element(dist2.begin(), dist2.end()) - dist2.begin();
     
-    dist.assign(n,INF);
-    dijkstra(v1, n, T, dist);
-    v2 = max_element(dist.begin(), dist.end()) - dist.begin();
+    vector<ll> dist3(n,INF);
+    dijkstra(v2, n, T, dist3);
     
-    cout << dist[v2] << endl;
-    
+    for(int i = 0; i < n;i++){
+        cout << max(dist2[i],dist3[i]) << endl;
+    }
     return 0;
 }

@@ -43,6 +43,12 @@ public:
     Circle(Point p, ld r) : p(p), r(r) {}
 };
 
+// 垂線の足
+Point proj(Line l, Point p) {
+    ld t = dot(p - l.a, l.a - l.b) / norm(l.a - l.b);
+    return l.a + t * (l.a - l.b);
+}
+
 // CCW
 int ccw(Point a, Point b, Point c) {
     b -= a; c -= a;
@@ -71,10 +77,51 @@ bool isis_lp(Line l, Point p) {return (abs(cross(l.b - p, l.a - p)) < eps);}
 // 点の線分上判定
 bool isis_sp(Line s, Point p) {return (abs(s.a - p) + abs(s.b - p) - abs(s.b - s.a) < eps);}
 
+/* 距離 */
+// 直線と直線の交点
+Point is_ll(Line s, Line t) {
+    Point sv = s.b - s.a, tv = t.b - t.a;
+    assert(cross(sv, tv) != 0);
+    return s.a + sv * cross(tv, t.a - s.a) / cross(tv, sv);
+}
+
+// 直線と点の距離
+ld dist_lp(Line l, Point p) {
+    return abs(p - proj(l, p));
+}
+
+// 直線と直線の距離
+ld dist_ll(Line l, Line m) {
+    return isis_ll(l, m) ? 0 : dist_lp(l, m.a);
+}
+
+// 直線と線分の距離
+ld dist_ls(Line l, Line s) {
+    return isis_ls(l, s) ? 0 : min(dist_lp(l, s.a), dist_lp(l, s.b));
+}
+
+// 線分と点の距離
+ld dist_sp(Line s, Point p) {
+    Point r = proj(s, p);
+    return isis_sp(s, r) ? abs(r - p) : min(abs(s.a - p), abs(s.b - p));
+}
+
+// 線分と線分の距離
+ld dist_ss(Line s, Line t) {
+    if (isis_ss(s, t)) return 0;
+    return min({ dist_sp(s, t.a), dist_sp(s, t.b), dist_sp(t, s.a), dist_sp(t, s.b) });
+}
 
 int main(void) {
     cin.tie(0); ios::sync_with_stdio(false);
+    int q; cin >> q;
+    for(int i = 0;i<q;i++){
+        Line s1(input_point(),input_point()), s2(input_point(),input_point());
+        cout << fixed << setprecision(10) << dist_ss(s1,s2) << endl;
+    }
     return 0;
 }
+
+
 
 

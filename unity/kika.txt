@@ -242,11 +242,11 @@ bool is_counter_clockwise(const Polygon &poly) {
 
 // ì ê´îªíË
 bool isConvex(const Polygon &poly){
-    int p_size = (int)poly.size();
-    if(p_size < 3) return false;
+    int n = (int)poly.size();
+    if(n < 3) return false;
     int s = -3;
-    for(int i = 0; i < p_size;i++){
-        int r = ccw(poly[(i+p_size-1)%p_size],poly[i%p_size],poly[(i+1)%p_size]);
+    for(int i = 0; i < n;i++){
+        int r = ccw(poly[(i+n-1)%n],poly[i%n],poly[(i+1)%n]);
         if(r == 1 && s == -3) s = r;
         if(s*r == -1) return false;
     }
@@ -259,7 +259,7 @@ bool isConvex(const Polygon &poly){
 //  1 => in
 int is_in_polygon(const Polygon &poly, Point p) {
 	ld angle = 0;
-	int n = poly.size();
+	int n = (int)poly.size();
 	for (int i = 0;i < n;i++) {
 		Point a = poly[i], b = poly[(i + 1) % n];
 		if (isis_sp(Line(a, b), p)) return 1;
@@ -270,21 +270,26 @@ int is_in_polygon(const Polygon &poly, Point p) {
 
 // ì ïÔ
 Polygon convex_hull(vector<Point> ps) {
-	int n = ps.size();
-	int k = 0;
-	sort(ps.begin(), ps.end());
-	Polygon ch(2 * n);
-	for (int i = 0; i < n; ch[k++] = ps[i++])
-		while (k >= 2 && ccw(ch[k - 2], ch[k - 1], ps[i]) <= 0) --k;
-	for (int i = n - 2, t = k + 1; i >= 0; ch[k++] = ps[i--])
-		while (k >= t && ccw(ch[k - 2], ch[k - 1], ps[i]) <= 0) --k;
-	ch.resize(k - 1);
-	return ch;
+    int n = (int)ps.size();
+    if(n < 3) return ps;
+    sort(ps.begin(), ps.end());
+    Polygon u = {ps[0], ps[1]},l = {ps[n-1],ps[n-2]};
+    for(int i = 2; i < n; i++){
+        for(int j = (int)u.size(); j>=2 && ccw(u[j-2],u[j-1],ps[i])>=0;j--)u.pop_back();
+        u.push_back(ps[i]);
+    }
+    for(int i = n-3;i>=0;i--){
+        for(int j = (int)l.size(); j>=2 && ccw(l[j-2],l[j-1],ps[i])>=0;j--)l.pop_back();
+        l.push_back(ps[i]);
+    }
+    reverse(l.begin(),l.end());
+    for(int i=(int)u.size()-2; i>= 1; i--)l.push_back(u[i]);
+    return l;
 }
 
 // ì ÉJÉbÉg
 Polygon convex_cut(const Polygon &ps, Line l) {
-	int n = ps.size();
+	int n = (int)ps.size();
 	Polygon Q;
 	for (int i = 0;i < n;i++) {
 		Point A = ps[i], B = ps[(i + 1) % n];

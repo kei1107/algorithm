@@ -254,7 +254,7 @@ bool isConvex(const Polygon &poly){
 }
 
 // ‰~‚Ì“àŠO”»’è
-// -1 => out
+//  2 => out
 //  0 => on
 //  1 => in
 int is_in_polygon(const Polygon &poly, Point p) {

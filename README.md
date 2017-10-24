@@ -1,8 +1,6 @@
 # algorithm
 復習がてらライブラリの整理
 
-============================================
-
 
 ## Verified
 ### aoj
@@ -14,7 +12,8 @@
 ### uva
 <https://uva.onlinejudge.org/>
 
-============================================
+# Constitution
+
 ### CGL : Computational Geometry
 幾何
 ### DPL : Discrete Optimization Problems

@@ -1,6 +1,6 @@
 # algorithm
 復習がてらライブラリの整理
-
+及び解いた問題のup(余裕があれば)
 
 ## Verified
 ### aoj

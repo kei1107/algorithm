@@ -232,7 +232,7 @@ ld area(const Polygon &p) {
 // ‘½ŠpŒ`‚Ì‰ñ“]•ûŒü
 bool is_counter_clockwise(const Polygon &poly) {
 	ld angle = 0;
-	int n = poly.size();
+	int n = (int)poly.size();
 	for (int i = 0;i < n;i++) {
 		Point a = poly[i], b = poly[(i + 1) % n], c = poly[(i + 2) % n];
 		angle += arg((c - b) / (b - a));

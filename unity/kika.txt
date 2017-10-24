@@ -240,6 +240,19 @@ bool is_counter_clockwise(const Polygon &poly) {
 	return angle > eps;
 }
 
+// “Ê«”»’è
+bool isConvex(const Polygon &poly){
+    int p_size = (int)poly.size();
+    if(p_size < 3) return false;
+    int s = -3;
+    for(int i = 0; i < p_size;i++){
+        int r = ccw(poly[(i+p_size-1)%p_size],poly[i%p_size],poly[(i+1)%p_size]);
+        if(r == 1 && s == -3) s = r;
+        if(s*r == -1) return false;
+    }
+    return true;
+}
+
 // ‰~‚Ì“àŠO”»’è
 // -1 => out
 //  0 => on

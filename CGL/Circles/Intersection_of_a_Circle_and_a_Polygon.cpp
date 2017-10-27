@@ -187,44 +187,44 @@ vector<Line> tangent_cc(Circle c1, Circle c2) {
 typedef vector<Point> Polygon;
 // ñ êœ
 ld area(const Polygon &p) {
-    ld res = 0;
-    int n = (int)p.size();
-    for (int j = 0;j < n;j++) res += cross(p[j], p[(j + 1) % n]);
-    return res / 2;
+	ld res = 0;
+	int n = (int)p.size();
+	for (int j = 0;j < n;j++) res += cross(p[j], p[(j + 1) % n]);
+	return res / 2;
 }
 // ëΩäpå`ÇÃâÒì]ï˚å¸
 bool is_counter_clockwise(const Polygon &poly) {
-    ld angle = 0;
-    int n = (int)poly.size();
-    for (int i = 0;i < n;i++) {
-        Point a = poly[i], b = poly[(i + 1) % n], c = poly[(i + 2) % n];
-        angle += arg((c - b) / (b - a));
-    }
-    return angle > eps;
+	ld angle = 0;
+	int n = (int)poly.size();
+	for (int i = 0;i < n;i++) {
+		Point a = poly[i], b = poly[(i + 1) % n], c = poly[(i + 2) % n];
+		angle += arg((c - b) / (b - a));
+	}
+	return angle > eps;
 }
 // ì ê´îªíË
-bool isConvex(const Polygon &poly){
-    int n = (int)poly.size();
-    if(n < 3) return false;
-    int s = -3;
-    for(int i = 0; i < n;i++){
-        int r = ccw(poly[(i+n-1)%n],poly[i%n],poly[(i+1)%n]);
-        if(r == 1 && s == -3) s = r;
-        if(s*r == -1) return false;
-    }
-    return true;
+bool isConvex(const Polygon &poly) {
+	int n = (int)poly.size();
+	if (n < 3) return false;
+	int s = -3;
+	for (int i = 0; i < n;i++) {
+		int r = ccw(poly[(i + n - 1) % n], poly[i%n], poly[(i + 1) % n]);
+		if (r == 1 && s == -3) s = r;
+		if (s*r == -1) return false;
+	}
+	return true;
 }
 // â~ÇÃì‡äOîªíË
 //  2 => out : 0 => on : 1 => in
 int is_in_polygon(const Polygon &poly, Point p) {
-    ld angle = 0;
-    int n = (int)poly.size();
-    for (int i = 0;i < n;i++) {
-        Point a = poly[i], b = poly[(i + 1) % n];
-        if (isis_sp(Line(a, b), p)) return 1;
-        angle += arg((b - p) / (a - p));
-    }
-    return eq(angle, 0) ? 0 : 2;
+	ld angle = 0;
+	int n = (int)poly.size();
+	for (int i = 0;i < n;i++) {
+		Point a = poly[i], b = poly[(i + 1) % n];
+		if (isis_sp(Line(a, b), p)) return 1;
+		angle += arg((b - p) / (a - p));
+	}
+	return eq(angle, 0) ? 0 : 2;
 }
 // ì ïÔ : ì ëΩäpå`ÇÃÇ†ÇÈàÍï”è„Ç…Ç†ÇÈì_Ç‡ä‹Çﬁ
 Polygon convex_hull(vector<Point> ps) {
@@ -247,52 +247,52 @@ Polygon convex_hull(vector<Point> ps) {
 // ì ïÔ : ì ëΩäpå`ÇÃÇ†ÇÈàÍï”è„Ç…Ç†ÇÈì_Çä‹Ç‹Ç»Ç¢
 /*
 Polygon convex_hull(vector<Point> ps) {
-	int n = ps.size();
-	int k = 0;
-	sort(ps.begin(), ps.end());
-	Polygon ch(2 * n);
-	for (int i = 0; i < n; ch[k++] = ps[i++])
-		while (k >= 2 && ccw(ch[k - 2], ch[k - 1], ps[i]) <= 0) --k;
-	for (int i = n - 2, t = k + 1; i >= 0; ch[k++] = ps[i--])
-		while (k >= t && ccw(ch[k - 2], ch[k - 1], ps[i]) <= 0) --k;
-	ch.resize(k - 1);
-	return ch;
+int n = ps.size();
+int k = 0;
+sort(ps.begin(), ps.end());
+Polygon ch(2 * n);
+for (int i = 0; i < n; ch[k++] = ps[i++])
+while (k >= 2 && ccw(ch[k - 2], ch[k - 1], ps[i]) <= 0) --k;
+for (int i = n - 2, t = k + 1; i >= 0; ch[k++] = ps[i--])
+while (k >= t && ccw(ch[k - 2], ch[k - 1], ps[i]) <= 0) --k;
+ch.resize(k - 1);
+return ch;
 }
 */
 // ì ëΩäpå`ÇÃíºåa
-ld convex_diameter(const Polygon& poly){
-    int n = (int)poly.size();
-    int ii = 0, jj = 0;
-    for(int i = 1;i < n;i++){
-        if(poly[i].imag() > poly[ii].imag())ii = i;
-        if(poly[i].imag() < poly[jj].imag())jj = i;
-    }
-    ld res = abs(poly[ii] - poly[jj]);
-    
-    int i, maxi,j,maxj;
-    i = maxi = ii; j = maxj = jj;
-    do{
-        if(cross(poly[(i+1)%n] - poly[i],poly[(j+1)%n] - poly[j]) >= 0) j = (j+1)%n;
-        else i = (i+1)%n;
-        if(abs(poly[i] - poly[j]) > res){
-            res = abs(poly[i] - poly[j]);
-            maxi = i; maxj = j;
-        }
-    }while(i != ii || j != jj);
-    return res;
+ld convex_diameter(const Polygon& poly) {
+	int n = (int)poly.size();
+	int ii = 0, jj = 0;
+	for (int i = 1;i < n;i++) {
+		if (poly[i].imag() > poly[ii].imag())ii = i;
+		if (poly[i].imag() < poly[jj].imag())jj = i;
+	}
+	ld res = abs(poly[ii] - poly[jj]);
+
+	int i, maxi, j, maxj;
+	i = maxi = ii; j = maxj = jj;
+	do {
+		if (cross(poly[(i + 1) % n] - poly[i], poly[(j + 1) % n] - poly[j]) >= 0) j = (j + 1) % n;
+		else i = (i + 1) % n;
+		if (abs(poly[i] - poly[j]) > res) {
+			res = abs(poly[i] - poly[j]);
+			maxi = i; maxj = j;
+		}
+	} while (i != ii || j != jj);
+	return res;
 }
 // ì ÉJÉbÉg
 Polygon convex_cut(const Polygon &ps, Line l) {
-    int n = (int)ps.size();
-    Polygon Q;
-    for (int i = 0;i < n;i++) {
-        Point A = ps[i], B = ps[(i + 1) % n];
-        Line m = Line(A, B);
-        if (ccw(l.a, l.b, A) != -1) Q.push_back(A);
-        if (ccw(l.a, l.b, A) * ccw(l.a, l.b, B) < 0 && isis_ll(l, m))
-            Q.push_back(is_ll(l, m));
-    }
-    return Q;
+	int n = (int)ps.size();
+	Polygon Q;
+	for (int i = 0;i < n;i++) {
+		Point A = ps[i], B = ps[(i + 1) % n];
+		Line m = Line(A, B);
+		if (ccw(l.a, l.b, A) != -1) Q.push_back(A);
+		if (ccw(l.a, l.b, A) * ccw(l.a, l.b, B) < 0 && isis_ll(l, m))
+			Q.push_back(is_ll(l, m));
+	}
+	return Q;
 }
 
 // â~Ç∆ëΩäpå`ÇÃã§í ïîï™
@@ -316,9 +316,12 @@ double area_of_polygon_and_circle(const Polygon& poly, const Circle c) {
 	}
 	return r / 2;
 }
-
 int main(void) {
 	cin.tie(0); ios::sync_with_stdio(false);
-
+	ll n; cin >> n; ld r; cin >> r;
+	Circle c(Point(0, 0), r);
+	Polygon poly(n);
+	for (int i = 0; i < (int)n;i++) poly[i] = input_point();
+	cout << fixed << setprecision(10) << area_of_polygon_and_circle(poly, c) << endl;
 	return 0;
 }

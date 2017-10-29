@@ -21,7 +21,7 @@ bool eq(ld a, ld b) { return (abs(a - b) < eps); } // Œë·‚Â‚«“™†”»’è
 ld dot(Point a, Point b) { return real(conj(a) * b); } // “àÏ
 ld cross(Point a, Point b) { return imag(conj(a) * b); } // ŠOÏ
 
-														 // ’¼ü‚Ì’è‹`
+// ’¼ü‚Ì’è‹`
 class Line {
 public:
 	Point a, b;

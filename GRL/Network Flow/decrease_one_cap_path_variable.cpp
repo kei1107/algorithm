@@ -93,17 +93,17 @@ int main() {
                 int u,v;
                 if(G[A][B] == 0){ u = A; v = B;}
                 else{u = B; v = A;}
-				
-				/* u->vまでの増加パスを確認, あれば, check時にそちらの道へパスが流れるので十分*/
-				fill(used.begin(), used.end(), 0);
-				if(!check(u,v)){
-					/* なければ, 最大流が-1される。ここで u->0 及び (V-1)->v に
-					余分な流れ(容量1分)が存在するので押し戻す*/
-                    fill(used.begin(),used.end(),0);
-					check(u, 0);
-                    fill(used.begin(),used.end(),0);
-					check(V - 1, v);
-					f--;
+            	
+            	/* u->vまでの増加パスを確認, あれば, check時にそちらの道へパスが流れるので十分*/
+            	fill(used.begin(), used.end(), 0);
+            	if(!check(u,v)){
+            		/* なければ, 最大流が-1される。ここで u->0 及び (V-1)->v に
+            		余分な流れ(容量1分)が存在するので押し戻す*/
+            		fill(used.begin(),used.end(),0);
+            		check(u, 0);
+            		fill(used.begin(),used.end(),0);
+            		check(V - 1, v);
+            		f--;
                 }
             }
             G[A][B] = G[B][A] = 0;

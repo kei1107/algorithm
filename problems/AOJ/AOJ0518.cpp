@@ -39,7 +39,6 @@ int main(void) {
     ll N;
     while(cin >> N, N){
         for(int i = 0; i < 5001;i++)for(int j = 0; j < 5001;j++) m[i][j] = false;
-        vector<pll> ps(N);
         for(int i = 0; i < N; i++){
             cin >> ps[i].first >> ps[i].second;
             m[ps[i].first][ps[i].second] = true;

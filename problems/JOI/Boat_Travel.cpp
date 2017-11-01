@@ -7,7 +7,7 @@ typedef pair<ll, ll> pll;
 #define LINF 1LL<<60
 
 /*
-<url:>
+<url:https://www.ioi-jp.org/joi/2007/2008-yo-prob_and_sol/2008-yo-t6/2008-yo-t6.html>
 問題文============================================================
 JOI国には，n 島の島があり， 各島には 1 から n までの番号が付けられている．
 現在，JOI国では各島の間を結ぶ航路網の整備が進んでいる．

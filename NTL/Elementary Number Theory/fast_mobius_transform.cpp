@@ -22,7 +22,7 @@ typedef pair<ll, ll> pll;
  <reference:http://d.hatena.ne.jp/simezi_tan/20130522/1369203086>
  
  高速メビウス変換：∩→∪ < rep(j, 0, n) if(j & (1 << i)) f[j] -= f[j ^ (1 << i)]; >
- 高速ゼータ変換：∪→∩ <rep(j, 0, n) if(j & (1 << i)) f[j] += f[j ^ (1 << i)];>
+ 高速ゼータ変換：∪→∩ <rep(j, 0, n) if(j & (1 << i)) f[j] += f[j | (1 << i)];>
  */
 
 inline ll gcd(ll a, ll b) { return b ? gcd(b, a%b) : a; }

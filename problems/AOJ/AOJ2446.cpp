@@ -7,7 +7,7 @@ typedef pair<ll, ll> pll;
 #define LINF 1LL<<60
 
 /*
- <url:https://github.com/kei1107/algorithm/blob/master/template/template_for_problems.cpp>
+ <url:http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=2446>
  問題文============================================================
  n個の整数a1, a2, …, anとn個の整数p1, p2, …, pn、整数mが与えられる。
  k番目の整数akをpk[%]の確率で選ぶ、という操作を各k(1 ≤ k ≤ n)について行い、

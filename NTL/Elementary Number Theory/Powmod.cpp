@@ -32,3 +32,11 @@ int main(void) {
     cout << powmod(m,n) << endl;
     return 0;
 }
+
+
+int pow_mod(int x, int k, int p)
+{
+        if(!k) return 1;
+        if(k%2) return x*pow_mod(x,k-1,p)%p;
+        else return pow_mod(x*x%p,k/2,p);
+}

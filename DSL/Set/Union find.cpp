@@ -25,37 +25,25 @@ struct UnionFind {
 
 //=========================================================================
 
-int par[1002];//親
-int Rank[1002];//木の深さ
-
-void init(int n){
-    for(int i = 0;i < n;i++){
-        par[i] = i;
-        Rank[i] = 0;
+struct UnionFind{
+    vector<int> parent, rank;
+    UnionFind(int n) : parent(n, -1), rank(n, 0) { }
+    int find(int x){
+        if(parent[x] == -1) return x;
+        else return (parent[x] = find(parent[x]));
     }
-}
-
-int find(int x){
-    if(par[x] == x){
-        return x;
-    }else{
-        return par[x] = find(par[x]);
+    bool unite(int x, int y){
+        x = find(x);
+        y = find(y);
+        if(x == y) return false;
+        if(rank[x] < rank[y])
+            parent[x] = y;
+        else
+            parent[y] = x;
+        if(rank[x] == rank[y]) rank[x]++;
+        return true;
     }
-}
-
-void unite(int x,int y){
-    x = find(x);
-    y = find(y);
-    if(x == y) return;
-    
-    if(Rank[x] < Rank[y]){
-        par[x] = y;
-    }else{
-        par[y] = x;
-        if(Rank[x] == Rank[y])Rank[x]++;
+    bool same(int x, int y){
+        return find(x) == find(y);
     }
-}
-
-bool same(int x,int y){
-    return find(x) == find(y);
-}
+};

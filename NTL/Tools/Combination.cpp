@@ -47,3 +47,17 @@ ll mod_inverse(ll a, ll m) {
 ll nCr(int n, int r) {
     return fact[n] * rfact[r] % MOD * rfact[n - r] % MOD;
 }
+
+============================================================
+C(n,m) = C(n,m-1) * (n-m+1) / m.
+C(n,m) = C(n,n-m)
+
+ll C(int n,int m){
+    m = m<(n-m) ? m : (n-m);
+    if(m == 0) return 1;
+    ll ans = 1;
+    for(int i=1;i<=m;i++){
+        ans = ans *(n-i+1)/i;
+    }
+    return ans;
+}

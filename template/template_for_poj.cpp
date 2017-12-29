@@ -3,6 +3,7 @@
 #include <cmath>
 #include <climits>
 #include <cfloat>
+#include <cstring>
 #include <map>
 #include <utility>
 #include <set>
@@ -25,8 +26,8 @@ using namespace std;
 typedef long long ll;
 typedef pair<int, int> pii;
 typedef pair<ll, ll> pll;
-#define INF 1<<30
-#define LINF 1LL<<60
+#define INF (1<<30)
+#define LINF (1LL<<60)
 
 /*
 <url:>

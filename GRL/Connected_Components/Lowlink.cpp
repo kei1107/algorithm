@@ -32,7 +32,7 @@ void lowlink(int at, int p, int &k) {
     }
 }
 
-
+// return cnt of articulation point
 int dfs(int at, int root, int ng) {
     used[at] = true;
     bool tmp = false;

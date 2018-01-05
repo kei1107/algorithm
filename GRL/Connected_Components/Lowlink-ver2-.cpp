@@ -10,6 +10,11 @@ vector<int> articulation;
 int ord[1000000], low[1000000];
 bool vis[1000000];
 
+// lowlink and determin bridge ,articulationpoint
+
+//if(ord[at] < low[n]) (n, at) is a bridge
+//if(at == 0) if(nG[at].size() > 1) at  is an articulation point
+//else if(ord[at] <= low[n]) at  is an articulation point
 void dfs(int v, int p, int &k)
 {
     vis[v] = true;

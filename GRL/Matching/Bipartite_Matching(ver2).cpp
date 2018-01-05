@@ -45,7 +45,7 @@ ll bipartite_matching() {
 int main() {
 	cin.tie(0); ios::sync_with_stdio(false);
 	ll X, Y, E; cin >> X >> Y >> E;
-	V = X + Y + 2; // initialize V
+	V = X + Y; // initialize V [0..index]
 	G.resize(V); used.resize(V); match.resize(V); // initialize G used match
 	for (int i = 0; i < E;i++) {
 		ll x, y; cin >> x >> y;

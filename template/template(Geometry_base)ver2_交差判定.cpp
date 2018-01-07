@@ -3,8 +3,8 @@ using namespace std;
 typedef long long ll;
 typedef pair<int, int> pii;
 typedef pair<ll, ll> pll;
-#define INF 1<<30
-#define LINF 1LL<<60
+const int INF = 1e9;
+const ll LINF = 1e16;
 
 typedef long double ld;
 typedef complex<ld> Point;

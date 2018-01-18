@@ -34,9 +34,42 @@ int main(void) {
 }
 
 
-int pow_mod(int x, int k, int p)
+ll pow_mod(ll x, ll k, ll m)
 {
         if(!k) return 1;
         if(k%2) return x*pow_mod(x,k-1,p)%p;
         else return pow_mod(x*x%p,k/2,p);
+}
+
+
+
+
+// ==================================
+
+// return (a * b) % m
+ll mul_mod(ll a,ll b,ll m){
+    ll res = 0;
+    ll exp = a % m;
+    while(b){
+        if(b&1){
+            res += exp;
+            if(res > m) res -= m;
+        }
+        exp <<= 1;
+        if(exp > m) exp -= m;
+        b >>= 1;
+    }
+    return res;
+}
+
+// return (x ^ k) % m
+ll pow_mod(ll a, ll b, ll m){
+    ll res = 1;
+    ll exp = a % m;
+    while(b){
+        if(b& 1) res = mul_mod(res, exp, m);
+        exp = mul_mod(exp, exp, m);
+        b >>= 1;
+    }
+    return res;
 }

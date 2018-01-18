@@ -66,3 +66,19 @@ int main() {
 	cout << ans << endl;
 	return 0;
 }
+
+// ==============================================
+// compress ver2
+int compress(int p[]){
+    vector<int> ps;
+    ps.resize(N);
+    for (int i=0; i<N; ++i) {
+        ps[i] = p[i];
+    }
+    sort(ps.begin(), ps.end());
+    ps.erase(unique(ps.begin(), ps.end()), ps.end());
+    for (int i=0; i<N; ++i) {
+        p[i] = 2 + (int)distance(ps.begin(), lower_bound(ps.begin(), ps.end(), p[i]));
+    }
+    return 2 + (int)ps.size();
+}

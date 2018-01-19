@@ -69,6 +69,7 @@ int main() {
 
 // ==============================================
 // compress ver2
+int N; // num of vertex
 int compress(int p[]){
     vector<int> ps;
     ps.resize(N);

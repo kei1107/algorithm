@@ -29,6 +29,7 @@ struct BIT {
         }
     }
     
+    // [l,r]
     void RangeAdd(int l,int r,int val){
         // Update BIT1
         add1(l,val);
@@ -60,7 +61,7 @@ struct BIT {
     int sum(int x){
         return sum1(x)*x - sum2(x);
     }
-    
+    // [l,r]
     int RangeSum(int l,int r){
         return sum(r) - sum(l-1);
     }

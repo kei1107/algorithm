@@ -76,3 +76,41 @@ int main(void) {
     cout << bit.RangeSum(2, 5) << endl;
     return 0;
 }
+
+// =============================
+#define MAX_N 100050
+
+ll bit0[MAX_N],bit1[MAX_N];
+ll sum(ll *b,int i){
+    int s = 0;
+    while (i > 0) {
+        s += b[i];
+        i -= (i & -i);
+    }
+    return s;
+}
+
+void add(ll *b,int i,ll x){
+    while (i <= MAX_N) {
+        b[i] += x;
+        i += (i & -i);
+    }
+}
+
+//[0,n]
+ll sum(int i){
+    return sum(bit1, i)*i + sum(bit0, i);
+}
+
+//(l,r]
+ll range_sum(int l,int r){
+    return sum(r) - sum(l);
+}
+
+//[l,r]
+void range_add(int l,int r,ll x){
+    add(bit0, l, -x*(l-1));
+    add(bit1, l,  x);
+    add(bit0, r,  x*r);
+    add(bit1, r, -x);
+}

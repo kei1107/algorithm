@@ -26,8 +26,8 @@ public:
 		xs.erase(unique(xs.begin(), xs.end()), xs.end());
 
 		for (int i = 0; i < N;i++) {
-			x1[i] = find(xs.begin(), xs.end(), x1[i]) - xs.begin();
-			x2[i] = find(xs.begin(), xs.end(), x2[i]) - xs.begin();
+			x1[i] = lower_bound(xs.begin(), xs.end(), x1[i]) - xs.begin();
+			x2[i] = lower_bound(xs.begin(), xs.end(), x2[i]) - xs.begin();
 		}
 
 		return (int)xs.size(); // xs.size‚ÍÅ‘å‚Å‚à6*N

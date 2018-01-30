@@ -33,6 +33,17 @@ struct Primal_Dual
         preve.assign(V, -1);
         prevv.assign(V, -1);
         
+        //一回だけbellmanfordで最初のポテンシャルを求める
+        for(int k = 0; k < V; k++) {
+            for(int i = 0;i < V;i++) {
+                for(int j = 0; j < (int)graph[i].size(); j++) {
+                    edge &e = graph[i][j];
+                    if (e.cap == 0)continue; // 誤差注意
+                    potential[e.to] = min(potential[e.to], potential[i] + e.cost);
+                }
+            }
+        }
+        
         while (f > 0) {
             min_cost.assign(V, PD_INF);
             que.push(pii(0, s));
@@ -111,6 +122,18 @@ void add_edge(int from,int to,int cap,int cost){
 int min_cost_flow(int s,int t,int f){
     int res = 0;
     fill(h,h+V,0);
+    
+    //一回だけbellmanfordで最初のポテンシャルを求める
+    for(int k = 0; k < V; k++) {
+        for(int i = 0;i < V;i++) {
+            for(int j = 0; j < (int)G[i].size(); j++) {
+                edge &e = G[i][j];
+                if (e.cap == 0)continue; // 誤差注意
+                h[e.to] = min(h[e.to], h[i] + e.cost);
+            }
+        }
+    }
+    
     while(f>0){
         priority_queue< pii, vector<pii>, greater<pii> >  que;
         fill( dist, dist+V , INF );

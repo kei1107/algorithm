@@ -68,6 +68,23 @@ int main() {
 }
 
 // ==============================================
+int N; // num of vertex
+    vector<int> ps;
+int compress(int p[]){
+    ps.resize(N);
+    for (int i=0; i<N; ++i) {
+        ps[i] = p[i];
+    }
+    sort(ps.begin(), ps.end());
+    ps.erase(unique(ps.begin(), ps.end()), ps.end());
+    for (int i=0; i<N; ++i) {
+        p[i] = (int)distance(ps.begin(), lower_bound(ps.begin(), ps.end(), p[i]));
+//        p[i] = (int)(lower_bound(ps.begin(),ps.end(),p[i]) - ps.begin());
+    }
+    return (int)ps.size();
+}
+
+
 // compress ver2
 int N; // num of vertex
 int compress(int p[]){

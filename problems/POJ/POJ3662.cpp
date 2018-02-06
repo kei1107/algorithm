@@ -44,20 +44,21 @@ const int INF = 1e9;                          const LL LINF = 1e16;
 const LL MOD = 1000000007;                    const double PI = acos(-1.0);
 int DX[8] = { 0, 0, 1, -1, 1, 1, -1, -1 };    int DY[8] = { 1, -1, 0, 0, 1, -1, 1, -1 };
 
-/* -----  2017/12/29  Problem: POJ 3662 / Link: http://poj.org/problem?id=3662  ----- */
-/* ------問題------
- 
- 
- 
- -----問題ここまで----- */
-/* -----解説等-----
- 
+/*
+ <url:http://poj.org/problem?id=3662>
+ 問題文============================================================
+ N頂点，辺P本のグラフが与えられる．K本の辺は無料で使うことができ，
+ それ以上使うとK本からはみ出た辺の中での最大の長さだけの料金が発生する．
+ 頂点1から頂点Nまでの経路をできるだけ安い料金で実現したい．
+ =================================================================
+ 解説=============================================================
  ある値X以下のコストは全部無視、それよりおおきいものをつかって到達できるかを判定。
  できなければXをさげていく。
  これで二分探索し、Xが答え
- 
- ----解説ここまで---- */
 
+ ちょっとライブラリ借りた
+ ================================================================
+ */
 
 #define DijkV 1005
 
@@ -67,10 +68,7 @@ typedef pair<int, int> typedijk;
 vector<vector<typedijk> >G;
 
 LL Dijkstra(vector<vector<typedijk> >& G, int s, int t,LL costline) {
-    //G = vector<vector<typedijk>>(1000, vector<typedijk>(0, typedijk(0, 0)));
-    
-    FOR(i, 0, DijkV)dist[i] = 0;//init INFでよい。(足しまくってもオーバーフローしないか注意)
-    
+    FOR(i, 0, DijkV)dist[i] = 0;
     priority_queue<typedijk, vector<typedijk>, greater<typedijk> > que; //優先度付きqueue 降順(距離、頂点)
     que.push(typedijk(0LL, s)); // push(距離,頂点)
     

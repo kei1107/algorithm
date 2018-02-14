@@ -29,7 +29,7 @@ public:
     }
     
     bool calc_dist(ll s) {
-        dist.assign(V,0);
+        dist.assign(V,LINF);
         dist[s] = 0;
         
         for (int i = 0; i < V;i++) {

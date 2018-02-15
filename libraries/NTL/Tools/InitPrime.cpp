@@ -1,5 +1,5 @@
 const ll MAX_PRIME = 200000;
-vector<int> primes(MAX_PRIME + 1);
+vector<int> primes;
 vector<int> is_prime(MAX_PRIME + 1,true);
 void init_primes(){
     is_prime[0] = is_prime[1] = false;

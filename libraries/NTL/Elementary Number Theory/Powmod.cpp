@@ -23,7 +23,7 @@ typedef pair<ll, ll> pll;
 //}
 
 const ll MOD = 1e9+7;
-ll powmod(ll a,ll b) {ll res=1;a%=MOD; assert(b>=0); for(;b;b>>=1){if(b&1)res=res*a%MOD;a=a*a%MOD;}return res;}
+ll powmod(ll a,ll b) {ll res=1;a%=MOD;for(;b;b>>=1){if(b&1)res=res*a%MOD;a=a*a%MOD;}return res;}
 
 
 int main(void) {

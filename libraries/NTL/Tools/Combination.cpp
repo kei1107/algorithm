@@ -12,40 +12,37 @@ for (int i = 0; i <= MAX_N; i++) {
 ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 
 
-単一の逆元は、
-Int inv[1000010];
-inv[1] = 1;
-for (int i = 2; i <= N; ++i)
-inv[i] = P - (P / i) * inv[P % i] % P;　(mod P)
-
-として求めることができる。これを用いて階乗とその逆元は
-Int fac[1000010], facInv[1000010];
-fac[0] = facInv[0] = 1;
-for (int i = 1; i <= N; ++i) {
-  fac[i] = (fac[i - 1] * i) % P;
-  facInv[i] = (facInv[i - 1] * inv[i]) % P;
-}
-
-
-ll fact[MAX], rfact[MAX];
-
-ll mod_pow(ll x, ll p, ll mod) {
-    ll a = 1;
-    while (p) {
-        if (p % 2) a = a * x % mod;
-        x = x * x % mod;
-        p /= 2;
+const ll MAX_N = 2e5 + 10;
+const ll MOD = 1e9+7;
+ll Inv[MAX_N];
+ll fact[MAX_N];
+ll factInv[MAX_N];
+void Inv_init(){
+    Inv[1] = 1;
+    for(int i = 2; i < MAX_N; i++) {
+        Inv[i] = Inv[MOD%i] * (MOD - MOD/i) % MOD;
     }
-    return a;
+}
+void fact_init(){
+    fact[0] = fact[1] = factInv[0] = factInv[1] = 1;
+    for(int i = 2; i < MAX_N; i++){
+        fact[i] = (fact[i-1] * i) % MOD;
+        factInv[i] = (factInv[i-1] * Inv[i])%MOD;
+    }
 }
 
-//逆元
-ll mod_inverse(ll a, ll m) {
-    return mod_pow(a, m - 2, m);
+// a^b % MOD;
+ll powmod(ll a,ll b) {ll res=1;a%=MOD; for(;b;b>>=1){if(b&1)res=res*a%MOD;a=a*a%MOD;}return res;}
+// 逆元 1/a % MOD
+ll inversemod(ll a) { return powmod(a,MOD - 2);}
+ll nCr(int n,int r) {
+    if(n < r) return 0;
+    return (fact[n] * (factInv[r] * factInv[n-r] % MOD)) % MOD;
 }
 
-ll nCr(int n, int r) {
-    return fact[n] * rfact[r] % MOD * rfact[n - r] % MOD;
+void init(){
+    Inv_init();
+    fact_init();
 }
 
 ============================================================

@@ -5,6 +5,9 @@ typedef pair<int, int> pii;
 typedef pair<ll, ll> pll;
 const int INF = 1e9;
 const ll LINF = 1e18;
+template<class S,class T> ostream &operator << (ostream& out,const pair<S,T>& o){
+    out << "(" << o.first << "," << o.second << ")"; return out;
+}
 
 int main(void) {
 	cin.tie(0); ios::sync_with_stdio(false);

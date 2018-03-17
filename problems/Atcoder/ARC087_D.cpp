@@ -3,94 +3,89 @@ using namespace std;
 typedef long long ll;
 typedef pair<int, int> pii;
 typedef pair<ll, ll> pll;
-#define INF 1<<30
-#define LINF 1LL<<60
+const int INF = 1e9;
+const ll LINF = 1e18;
 
 /*
- <url:https://beta.atcoder.jp/contests/arc087/tasks/arc087_b>
- 問題文============================================================
+<url:https://arc087.contest.atcoder.jp/tasks/arc087_b>
+問題文============================================================
  二次元平面の原点にロボットが置かれています。 最初、ロボットは x 軸の正の向きを向いています。
  
- このロボットに命令列s が与えられます。s は次の2 文字のみからなり、先頭から末尾まで順に実行されます。
- F : 今向いている向きに長さ1 だけ移動する。
- T : 時計回りまたは反時計回りの好きな方向に90 度だけ向きを変える。
- ロボットの目標は、命令列をすべて実行し終わった後に座標(x,y) にいることです。
+ このロボットに命令列 s が与えられます。 s は次の 2 文字のみからなり、先頭から末尾まで順に実行されます。
+ 
+ F : 今向いている向きに長さ 1 だけ移動する。
+ T : 時計回りまたは反時計回りの好きな方向に 90 度だけ向きを変える。
+ ロボットの目標は、命令列をすべて実行し終わった後に座標 (x,y) にいることです。
  この目標が達成可能か判定してください。
  
- s  は F, T のみからなる。
- 1≤|s|≤8 000
- x,y は整数である。
- |x|,|y|≤|s|
- =================================================================
+=================================================================
+
+解説=============================================================
+
+ Tによりロボットは時計回り or 反時計回りに必ず向きを変えるので
+ この問題は x方向と y方向の移動座標をそれぞれ独立で考えることができる
  
- 解説=============================================================
- Tを区切りとして文字を分割して考えると、
- 偶数番目(x軸側)と奇数番目(y軸側)は各々独立して考えることができることに気づく
+ よって、 xとyに関して、その移動距離(T ~ T までの距離)を持った配列を用意しておき
+ dp[i][j] := i番目の移動をするとき, 開始地点 j である
  
- そして、道の選びかたは各区切り間のFの数をCとすると
- x軸に関しては
- 一番最初は
-     C
- 二番目以降は
-     pre_C + C or pre_C - C
+ と行ったdpを行えば良い
  
- yに関しては一番最初の条件がなくなっただけで同様のことが言える
- 
- 
- となるのでハッシュなりとって計算してやればはい
- ================================================================
- */
-bool dp1[4050][16001];
-bool dp2[4050][16001];
-int main(void) {
-    cin.tie(0); ios::sync_with_stdio(false);
+================================================================
+*/
+
+const int Base = 10000;
+bool dpx[4050][2*Base];
+bool dpy[4050][2*Base];
+
+void solve(){
     string s; cin >> s;
-    ll x,y; cin >> x >> y;
-    vector<int> ax,ay;
-    int t = 0;
+    int x,y; cin >> x >> y;
+    vector<int> xs,ys;
+    
+    bool dir = true;
     int cnt = 0;
     for(int i = 0; i < s.length();i++){
-        if(s[i] == 'F'){
-            cnt++;
-        }else{
-            if(t%2 == 0){
-                ax.push_back(cnt);
+        if(s[i] == 'T'){
+            if(dir){
+                xs.push_back(cnt);
             }else{
-                ay.push_back(cnt);
+                ys.push_back(cnt);
             }
-            t++; cnt = 0;
-        }
-    }
-    if(cnt != 0){
-        if(t%2 == 0){
-            ax.push_back(cnt);
+            cnt = 0;
+            dir = !dir;
         }else{
-            ay.push_back(cnt);
+            cnt++;
         }
     }
-    dp1[0][8000] = true;
-    for(int i = 0; i < (int)ax.size();i++){
-        for(int j = 0; j <= 16000;j++){
-            if(dp1[i][j]){
-                dp1[i+1][j + ax[i]] = true;
-                if(i == 0) continue;
-                dp1[i+1][j - ax[i]] = true;
-            }
+    if(dir){
+        xs.push_back(cnt);
+    }else{
+        ys.push_back(cnt);
+    }
+    
+    dpx[1][xs[0] + Base] = true;
+    for(int i = 1; i < (int)xs.size();i++){
+        for(int j = 0; j < 2*Base;j++){
+            if(!dpx[i][j]) continue;
+            dpx[i+1][j+xs[i]] = dpx[i+1][j-xs[i]] = true;
         }
     }
-    dp2[0][8000] = true;
-    for(int i = 0; i < (int)ay.size();i++){
-        for(int j = 0; j <= 16000;j++){
-            if(dp2[i][j]){
-                dp2[i+1][j + ay[i]] = true;
-                dp2[i+1][j - ay[i]] = true;
-            }
+    
+    dpy[0][Base] = true;
+    for(int i = 0; i < (int)ys.size();i++){
+        for(int j = 0; j < 2*Base;j++){
+            if(!dpy[i][j]) continue;
+            dpy[i+1][j+ys[i]] = dpy[i+1][j-ys[i]] = true;
         }
     }
-    if(dp1[ax.size()][8000+x] && dp2[ay.size()][8000+y]){
+    if(dpx[xs.size()][Base + x] && dpy[ys.size()][Base + y]){
         cout << "Yes" << endl;
     }else{
         cout << "No" << endl;
     }
-    return 0;
+}
+int main(void) {
+	cin.tie(0); ios::sync_with_stdio(false);
+    solve();
+	return 0;
 }

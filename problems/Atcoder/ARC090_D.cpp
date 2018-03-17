@@ -7,105 +7,69 @@ const int INF = 1e9;
 const ll LINF = 1e18;
 
 /*
-<url:https://beta.atcoder.jp/contests/arc090/tasks/arc090_b>
+<url:https://arc090.contest.atcoder.jp/tasks/arc090_b>
 問題文============================================================
- x  軸上に N 人の人が立っています。 人 iの位置を xi とします。
- 任意のi に対して、 xi は0 以上10^9 以下の整数です。同じ位置に複数の人が立っていることもありえます。
+ x 軸上に N 人の人が立っています。 人 i の位置を xi とします。
+ 任意の i に対して、xi は 0 以上 109 以下の整数です。
+ 同じ位置に複数の人が立っていることもありえます。
  
- これらの人の位置に関する情報が M 個与えられます。 このうち i 個めの情報は (Li,Ri,Di) という形をしています。
- この情報は、人 Ri は人 Li よりも距離 Di だけ右にいること、 すなわち、
- xRi−xLi=Di が成り立つことを表します。
+ これらの人の位置に関する情報が M 個与えられます。
+ このうち i 個めの情報は (Li,Ri,Di) という形をしています。
+ この情報は、人 Ri は人 Li よりも距離 Di だけ右にいること、
+ すなわち、xRi−xLi=Di が成り立つことを表します。
  
  これら M 個の情報のうちのいくつかに誤りがある可能性があることがわかりました。
- 与えられる M 個すべての情報と矛盾しないような値の組 (x1,x2,...,xN) が存在するかどうか判定してください。
- 
- 制約
- 1≤N≤100,000
- 0≤M≤200,000
-
- 1≤Li,Ri≤N ( 1≤i≤M)
- 0≤Di≤10,000 ( 1≤i≤M)
- Li≠Ri ( 1≤i≤M)
- i≠j のとき、 (Li,Ri)≠(Lj,Rj) かつ (Li,Ri)≠(Rj,Lj) Di は整数である
+ 与えられる M 個すべての情報と矛盾しないような値の組 (x1,x2,…,xN) が存在するかどうか判定してください。
 =================================================================
 
 解説=============================================================
 
- ある頂点uから頂点vに互いに到達可能なグループに分ける。
- 各グループの基準位置(適当なグループ内の任意の頂点の位置)は独立して考えることができるので
- 各グループごとに最初の基準位置を決めうちして、dfsで頂点間を辿っていき、矛盾がないか見ていけば良い。
- 各頂点での操作は高々１回の行われるだけなので間に合う
+ 互いに到達できる頂点集合の中で、一つの頂点を基準位置として、
+ グラフのように各頂点を辿っていきながら矛盾がないかどうか確認していけば良い
  
 ================================================================
 */
-
+int N,M;
 struct edge{
-    ll u;
-    ll v;
-    ll cost;
-    
-    ll l;
-    ll r;
+    int L,R,D;
     edge(){}
-    edge(ll u,ll v,ll cost,ll l,ll r):u(u),v(v),cost(cost),l(l),r(r){}
+    edge(int L,int R,int D):L(L),R(R),D(D){}
 };
-
-ll N,M;
-vector<ll> L,R,D;
 vector<vector<edge>> G;
-vector<ll> loc;
-vector<ll> check;
 
-bool dfs(ll n,bool from){
-    if(check[n] == 1) return true;
-    check[n] = 1;
-    if(from){
-        loc[n] = 0;
-    }
-    for(auto e:G[n]){
-       if(loc[e.l] == INF){
-            loc[e.l] = loc[e.r] - e.cost;
-            if(!dfs(e.l,false)) return false;
-            
-            continue;
+bool dfs(int n,bool first,vector<int>& checked,vector<ll>& loc){
+    if(first) loc[n] = 0;
+    checked[n] = 1;
+    for(edge& e:G[n]){
+        if(checked[e.R] == 0){
+            loc[e.R] = loc[e.L] + e.D;
+            if(!dfs(e.R,false,checked,loc))return false;
+        }else{
+            if(loc[e.R] != loc[e.L] + e.D) return false;
         }
-        
-        if(loc[e.r] == INF){
-            loc[e.r] = loc[e.l] + e.cost;
-            if(!dfs(e.r,false)) return false;
-            
-            continue;
-        }
-        
-        if(loc[e.r] - loc[e.l] != e.cost) return false;
     }
     return true;
 }
 int main(void) {
-    cin.tie(0); ios::sync_with_stdio(false);
+	cin.tie(0); ios::sync_with_stdio(false);
     cin >> N >> M;
-    L.resize(M);R.resize(M);D.resize(M);
-    loc.resize(N,INF); check.resize(N);
-    for(int i = 0; i < M;i++){
-        cin >> L[i] >> R[i] >> D[i];
-        L[i]--; R[i]--;
-    }
-    
     G.resize(N);
     for(int i = 0; i < M;i++){
-        G[L[i]].push_back(edge(L[i],R[i],D[i],L[i],R[i]));
-        G[R[i]].push_back(edge(R[i],L[i],D[i],L[i],R[i]));
+        int L,R,D; cin >> L >> R >> D;
+        L--; R--;
+        G[L].push_back(edge(L,R,D));
+        G[R].push_back(edge(R,L,-D));
     }
     
+    vector<int> checked(N,0);
+    vector<ll> loc(N,LINF);
     for(int i = 0; i < N;i++){
-        if(!dfs(i,true)){
+        if(checked[i]) continue;
+        if(!dfs(i,true,checked,loc)){
             cout << "No" << endl;
             return 0;
         }
     }
-    
- //   cout << loc[6] << " " << loc[7] << " " << loc[8] << endl;
     cout << "Yes" << endl;
-    return 0;
+	return 0;
 }
-

@@ -89,3 +89,88 @@ int main(void) {
     }
     return 0;
 }
+
+
+
+// ================================== //
+
+#include "bits/stdc++.h"
+using namespace std;
+typedef long long ll;
+typedef pair<int, int> pii;
+typedef pair<ll, ll> pll;
+const int INF = 1e9;
+const ll LINF = 1e18;
+template<class S,class T> ostream &operator << (ostream& out,const pair<S,T>& o){
+    out << "(" << o.first << "," << o.second << ")"; return out;
+}
+
+
+struct edge{
+    ll u,v,c;
+    edge():u(0),v(0),c(0){}
+    edge(ll u,ll v,ll c):u(u),v(v),c(c){}
+};
+typedef vector<vector<edge>> Graph;
+Graph G;
+class LCA{
+public:
+    const ll n = 0;
+    const ll log2_n = 0;
+    vector<vector<ll>> parent;
+    vector<ll> depth;
+    LCA();
+    LCA(const Graph &g,ll root):n((ll)g.size()),log2_n(log2(n)+1),parent(log2_n,vector<ll>(n)),depth(n){
+        dfs(g,root,-1,0);
+        for(int k = 0; k+1 < log2_n; k++){
+            for(int v = 0; v < (int)g.size();v++){
+                if(parent[k][v] < 0) parent[k+1][v] = -1;
+                else parent[k+1][v] = parent[k][parent[k][v]];
+            }
+        }
+    }
+    
+    void dfs(const Graph &g,ll v,ll p,ll d){
+        parent[0][v] = p; depth[v] = d;
+        for(auto &e :g[v]){
+            if(e.v != p) dfs(g, e.v, v, d+1);
+        }
+    }
+    
+    ll get(ll u,ll v){
+        if(depth[u] > depth[v]) swap(u,v);
+        for(int k = 0; k < log2_n; k++){
+            if(((depth[v]-depth[u])>>k) & 1) v = parent[k][v];
+        }
+        if(u == v) return u;
+        for(int k = (int)log2_n - 1; k >= 0; k--){
+            if(parent[k][u] != parent[k][v]){
+                u = parent[k][u]; v = parent[k][v];
+            }
+        }
+        return parent[0][u];
+    }
+};
+
+// http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_5_C&lang=jp
+int main(void) {
+    cin.tie(0); ios::sync_with_stdio(false);
+    ll n; cin >> n;
+    G.resize(n);
+    for(int i = 0; i < n;i++){
+        ll k; cin >> k;
+        for(int j = 0; j < k;j++){
+            ll c; cin >> c;
+            G[i].push_back(edge(i,c,0));
+            G[c].push_back(edge(c,i,0));
+        }
+    }
+    LCA lca(G,0);
+    ll q; cin >> q;
+    while(q--){
+        ll u,v; cin >> u >> v;
+        cout << lca.get(u,v) << endl;
+    }
+    return 0;
+}
+

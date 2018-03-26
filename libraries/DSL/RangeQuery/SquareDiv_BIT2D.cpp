@@ -1,14 +1,4 @@
-#include <iostream>
-#include <cstring>
-#include <algorithm>
-using namespace std;
-typedef long long ll;
-typedef pair<int, int> pii;
-typedef pair<ll, ll> pll;
-#define INF 1<<30
-#define LINF 1LL<<60
-
-// 平方分割＋2dBIT
+// 平方分割＋BIT2D
 
 // example : <https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=3141>
 

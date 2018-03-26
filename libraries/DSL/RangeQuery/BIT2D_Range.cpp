@@ -3,10 +3,15 @@ using namespace std;
 typedef long long ll;
 typedef pair<int, int> pii;
 typedef pair<ll, ll> pll;
-#define INF (1<<30)
-#define LINF (1LL<<60)
+const int INF = 1e9;
+const ll LINF = 1e18;
+template<class S,class T> ostream& operator << (ostream& out,const pair<S,T>& o){ out << "(" << o.first << "," << o.second << ")"; return out; }
+template<class T> ostream& operator << (ostream& out,const vector<T> V){ for(int i = 0; i < V.size(); i++){ out << V[i]; if(i!=V.size()-1) out << " ";} return out; }
+template<class T> ostream& operator << (ostream& out,const vector<vector<T> > Mat){ for(int i = 0; i < Mat.size(); i++) { if(i != 0) out << endl; out << Mat[i];} return out; }
+template<class S,class T> ostream& operator << (ostream& out,const map<S,T> mp){ out << "{ "; for(auto it = mp.begin(); it != mp.end(); it++){ out << it->first << ":" << it->second; if(mp.size()-1 != distance(mp.begin(),it)) out << ", "; } out << " }"; return out; }
 
-using namespace std;
+
+// ==================== //
 
 class BIT2D {
 private:
@@ -75,6 +80,8 @@ ll BIT2D::rangeQuery(int x1, int y1, int x2, int y2) {
     return queryTillEnd(x2, y2) - queryTillEnd(x1 - 1, y2) - queryTillEnd(x2, y1 - 1) + queryTillEnd(x1 - 1, y1 - 1);
 }
 
+
+// example
 int main() {
     int N, M;
     cin >> N >> M;

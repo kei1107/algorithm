@@ -10,7 +10,7 @@ template<class S,class T> ostream &operator << (ostream& out,const pair<S,T>& o)
 }
 /*
  Atcoder 100~200点代
- アな問題が多いので,まとめる
+ 全部まとめる
 */
 // https://abc042.contest.atcoder.jp/tasks/abc042_a
 //void solve(){ ll A,B,C; cin >> A >> B >> C; if(A == 5 && B == 5 && C == 7){ cout << "YES" << endl; return;} if(A == 5 && B == 7 && C == 5){ cout << "YES" << endl; return;} if(A == 7 && B == 5 && C == 5){ cout << "YES" << endl; return;} cout << "NO" << endl; return ; }
@@ -112,6 +112,8 @@ template<class S,class T> ostream &operator << (ostream& out,const pair<S,T>& o)
 //void solve(){char c[3][3];for(int i = 0;i<3;i++)for(int j = 0;j<3;j++)cin>>c[i][j];cout<<c[0][0]<<c[1][1]<<c[2][2]<<endl;}
 // https://abc091.contest.atcoder.jp/tasks/abc091_a
 //void solve(){ll A,B,C;cin>>A>>B>>C;cout<<(A+B>=C?"Yes":"No")<<endl;}
+// https://abc092.contest.atcoder.jp/tasks/abc092_a
+// void solve(){ ll A,B,C,D; cin >> A >> B >> C >> D; cout << min(A,B)+min(C,D)<<endl;}
 // https://apc001.contest.atcoder.jp/tasks/apc001_a
 //void solve(){ll X,Y;cin>>X>>Y;cout<<(X%Y==0?-1:X*(Y-1))<<endl;}
 // https://cf16-final-open.contest.atcoder.jp/tasks/codefestival_2016_final_a
@@ -153,7 +155,16 @@ template<class S,class T> ostream &operator << (ostream& out,const pair<S,T>& o)
 // https://dwacon2018-prelims.contest.atcoder.jp/tasks/dwacon2018_prelims_a
 //void solve(){string s;cin>>s;cout<<(s[0]==s[2]&&s[1]==s[3]?"Yes":"No")<<endl;}
 
-// ========================== ここから　200 =================================//
+
+
+/*
+ *************************************************************************
+ *************************** ここから　200 *********************************
+ *************************************************************************
+*/
+
+
+
 // https://abc042.contest.atcoder.jp/tasks/abc042_b
 //void solve(){ll N,L;cin>>N>>L;vector<string>S(N);for(auto&in:S)cin>>in;sort(S.begin(),S.end());for(auto s:S)cout<<s;cout<<endl;}
 // https://abc043.contest.atcoder.jp/tasks/abc043_b
@@ -216,6 +227,8 @@ template<class S,class T> ostream &operator << (ostream& out,const pair<S,T>& o)
 //void solve(){ll N,K;cin>>N>>K;vector<ll>l(N);for(auto&in:l)cin>>in;sort(l.begin(),l.end(),greater<ll>());cout<<accumulate(l.begin(),l.begin()+K,0LL)<<endl;}
 // https://abc068.contest.atcoder.jp/tasks/abc068_b
 //void solve(){ll N;cin>>N;ll n=1;while(n*2<=N)n<<=1;cout<<n<<endl;}
+// https://abc069.contest.atcoder.jp/tasks/abc069_b
+// void solve(){string s;cin>>s;cout<<s[0]<<s.length()-2<<s[s.length()-1]<<endl;}
 // https://abc070.contest.atcoder.jp/tasks/abc070_b
 //void solve(){ll A,B,C,D;cin>>A>>B>>C>>D;cout<<max(0LL,min(B,D)-max(A,C))<<endl;}
 // https://abc071.contest.atcoder.jp/tasks/aSbc071_b
@@ -261,6 +274,8 @@ template<class S,class T> ostream &operator << (ostream& out,const pair<S,T>& o)
 //void solve(){ll A,B;cin>>A>>B;ll ans=0;for(ll x=A;x<=B;x++){string s=to_string(x);if(check(s))ans++;}cout<<ans<<endl;}
 // https://abc091.contest.atcoder.jp/tasks/abc091_b
 //void solve(){set<string> s;map<string,ll> mp1,mp2;ll N,M;cin>>N;for(int i=0;i<N;i++){string str;cin>>str;s.insert(str);mp1[str]++;}cin>>M;for(int j=0;j<M;j++){string str;cin>>str;s.insert(str);mp2[str]++;}ll ans=0;for(auto it:s)ans=max(ans,mp1[it]-mp2[it]);cout<<ans<<endl;}
+// https://abc092.contest.atcoder.jp/tasks/abc092_b
+void solve(){ll N,D,X;cin>>N>>D>>X;vector<ll>A(N);for(auto& in:A)cin>>in;for(int i = 0; i < N;i++){ X+=(D-1)/A[i]+1;}cout<<X << endl;}
 // https://arc059.contest.atcoder.jp/tasks/arc059_a
 //void solve(){ll N;cin>>N;vector<ll>a(N);for(auto&in:a)cin>>in;ll ans=INF;ll t=0,ave=accumulate(a.begin(),a.end(),0LL)/N;for(int i=-1;i<=1;i++){t=0;for(auto v:a)t+=(ave+i-v)*(ave+i-v);ans=min(ans,t);}cout<<ans<<endl;}
 // https://arc070.contest.atcoder.jp/tasks/arc070_a
@@ -308,7 +323,7 @@ template<class S,class T> ostream &operator << (ostream& out,const pair<S,T>& o)
 // https://yahoo-procon2018-qual.contest.atcoder.jp/tasks/yahoo_procon2018_qual_b
 //void solve(){ll X,K;cin>>X>>K;ll key=pow(10,K);ll ans=X+1;if(ans%key==0)cout << ans << endl; else cout << (ans/key + 1)*key << endl;}
 // https://yahoo-procon2017-qual.contest.atcoder.jp/tasks/yahoo_procon2017_qual_b
-void solve(){ll N,K;cin>>N>>K;vector<ll>A(N);for(auto&in:A)cin>>in;sort(A.begin(),A.end());cout<<accumulate(A.begin(),A.begin()+K,0LL)+K*(K-1)/2<<endl;}
+//void solve(){ll N,K;cin>>N>>K;vector<ll>A(N);for(auto&in:A)cin>>in;sort(A.begin(),A.end());cout<<accumulate(A.begin(),A.begin()+K,0LL)+K*(K-1)/2<<endl;}
 
 
 // Main function

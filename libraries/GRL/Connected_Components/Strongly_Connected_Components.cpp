@@ -54,8 +54,8 @@ public:
         for(int u = 0; u < V;u++){
             for(TYPE& v: G[u]){
                 if(!same(u,v)){
-                    group_G[u].emplace_back(v);
-                    group_rG[v].emplace_back(u);
+                    group_G[group[u]].emplace_back(group[v]);
+                    group_rG[group[v]].emplace_back(group[u]);
                 }
             }
         }

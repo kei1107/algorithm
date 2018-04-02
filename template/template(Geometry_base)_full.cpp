@@ -318,7 +318,7 @@ double area_of_polygon_and_circle(const Polygon& poly, const Circle c) {
 }
 
 int main(void) {
-	cin.tie(0); ios::sync_with_stdio(false);
+    cin.tie(0); ios_base::sync_with_stdio(false);
 
 	return 0;
 }

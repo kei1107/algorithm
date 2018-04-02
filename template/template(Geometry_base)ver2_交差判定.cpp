@@ -73,7 +73,7 @@ bool isis_sp(Line s, Point p) {return (abs(s.a - p) + abs(s.b - p) - abs(s.b - s
 
 
 int main(void) {
-    cin.tie(0); ios::sync_with_stdio(false);
+    cin.tie(0); ios_base::sync_with_stdio(false);
     return 0;
 }
 

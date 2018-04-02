@@ -113,7 +113,7 @@ ld dist_ss(Line s, Line t) {
 }
 
 int main(void) {
-    cin.tie(0); ios::sync_with_stdio(false);
+    cin.tie(0); ios_base::sync_with_stdio(false);
     return 0;
 }
 

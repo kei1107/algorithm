@@ -4,6 +4,7 @@
  */
 
 const ll INIT = INT_MAX;
+const ll NIL = LLONG_MAX;
 struct SegTree {
     int N;
     ll init_v;
@@ -13,17 +14,17 @@ struct SegTree {
         N = 1;
         while (N < _N) N *= 2;
         node.resize(2 * N - 1, init_v);
-        lazy.resize(2 * N - 1, -1);
+        lazy.resize(2 * N - 1, NIL);
     }
     
     void lazy_evaluate(int k) {
-        if (lazy[k] == -1) return;
+        if (lazy[k] == NIL) return;
         node[k] = lazy[k];
         if (k < N - 1) {
             lazy[2 * k + 1] = lazy[k];
             lazy[2 * k + 2] = lazy[k];
         }
-        lazy[k] = -1;
+        lazy[k] = NIL;
     }
     
     /* [a,b) 引数の範囲に注意!! s~tまでを更新→update(s,t+1,~) */

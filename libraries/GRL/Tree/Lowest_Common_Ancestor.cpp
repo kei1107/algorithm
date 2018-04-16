@@ -34,7 +34,7 @@ public:
         while(N < N_) N*=2;
         node.clear(); node.assign(2*N - 1,make_pair(INF,INF));
         for(int i = 0; i < N_;i++) node[N-1+i] = ET[i];
-        for(int k = N - 2; k>=0;k--) node[k] = min(node[2*k+1],node[2*k+2]);
+        for(ll k = N - 2; k>=0;k--) node[k] = min(node[2*k+1],node[2*k+2]);
     }
     
     void dfs(ll n,ll dep){
@@ -58,7 +58,7 @@ public:
         return min(vl,vr);
     }
     
-    ll solve(ll s,ll t){
+    ll query(ll s,ll t){
         ll idx1 = Ind[s],idx2 = Ind[t];
         if(idx1 > idx2) swap(idx1,idx2);
         
@@ -85,7 +85,7 @@ int main(void) {
     ll q; cin >> q;
     for(int i = 0; i < q;i++){
         ll u, v; cin >> u >> v;
-        cout << lca.solve(u,v) << endl;
+        cout << lca.query(u,v) << endl;
     }
     return 0;
 }

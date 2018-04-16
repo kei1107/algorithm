@@ -26,9 +26,9 @@ public:
         T[v].emplace_back(u);
     }
     
-    void fit(){
+    void fit(ll root){
         visited.clear(); visited.assign(V,0);
-        dfs(0,0);
+        dfs(root,0);
         ll N_ = ET.size();
         N = 1;
         while(N < N_) N*=2;

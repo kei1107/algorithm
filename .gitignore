@@ -38,3 +38,10 @@ application.macosx
 *.exe
 *.out
 *.app
+
+
+#User custom
+libraries/*/bits
+problems/*/bits
+libraries/*/template*
+problems/*/template*

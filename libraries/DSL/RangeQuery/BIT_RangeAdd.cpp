@@ -7,7 +7,7 @@ struct BIT {
     int N;
     vector<ll> bit1;
     vector<ll> bit2;
-    BIT(int N):N(N) {
+    BIT(ll N):N(N) {
         /* BITは[1..N]で扱う */
         bit1.resize(N + 1, 0);
         bit2.resize(N + 1, 0);

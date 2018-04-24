@@ -1,4 +1,3 @@
-
 /*
  1-index
  
@@ -6,14 +5,14 @@
  sum : [1,x] の総和を出力
  */
 struct BIT {
-    int N;
+    ll N;
     vector<ll> bit;
-    BIT(int N):N(N) {
+    BIT(ll N):N(N) {
         /* BITは[1..N]で扱う */
         bit.resize(N + 1, 0);
     }
     
-    void add(int x, int val){
+    void add(int x, ll val){
         while (x <= N) {
             bit[x] += val;
             x += x & -x;

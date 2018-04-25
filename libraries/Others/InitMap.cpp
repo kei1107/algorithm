@@ -20,7 +20,7 @@ public:
     static float INIT_F_VAL;
     static double INIT_D_VAL;
     static long double INIT_LD_VAL;
-
+    
     operator bool () {return INIT_B_VAL; }
     operator short () {return INIT_SHRT_VAL; }
     operator unsigned short () {return INIT_USHRT_VAL; }
@@ -68,11 +68,25 @@ public:
     static T GetInitVal(){ return InitVal(); }
     static void SetInitVal(T init){ InitVal::SetVal(init); }
     T& operator = (const T& o){ return val = o; }
+    const T& operator + (const T& o)const { return T(val+o);}
+    const T& operator - (const T& o)const { return T(val-o); }
+    const T& operator * (const T& o)const { return T(val*o);}
+    const T& operator / (const T& o)const { return T(val/o);}
+    T& operator += (const T& o){ return val += o; }
+    T& operator -= (const T& o){return val-= o;}
+    T& operator *= (const T& o){ return val *= o;}
+    T& operator /= (const T& o){ return val/=o;}
+    bool operator == (const T& o) const { return val == o; }
+    bool operator != (const T& o) const {return val!=o;}
+    bool operator < (const T& o) const { return val < o; }
+    bool operator <= (const T& o) const { return val <= o;}
+    bool operator > (const T& o) const {  return val > o;}
+    bool operator >= (const T& o) const { return val >= o;}
 };
 
 int main(void) {
     cin.tie(0); ios_base::sync_with_stdio(false);
-    #define debug(x) cout << #x << ": " << x << endl
+#define debug(x) cout << #x << ": " << x << endl
     cout << InitMap<int>::GetInitVal() << endl;
     InitMap<int>::SetInitVal(10);
     cout << InitMap<int>::GetInitVal() << endl;
@@ -107,5 +121,10 @@ int main(void) {
     mp["a"] = 5;
     debug(mp["a"].val);
     debug(mp["INF"].val);
+    
+    map<int,InitMap<int>> mp2;
+    mp2[100] = 1000;
+    debug(mp2[100].val);
+    debug(mp2[0].val);
     return 0;
 }

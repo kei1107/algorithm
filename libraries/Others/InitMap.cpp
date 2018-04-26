@@ -4,6 +4,11 @@ using namespace std;
 /*
  自作クラス
  mapで初期値をデフォルトコンストラクタ以外にしたい時に使用する
+ 
+ 標準型とInitMap<T>に置ける　標準型が左側になる処理を行っていないため
+ 
+ InitMap<int>(10) + x ( xはInitMap<int>の型)
+ と行ったようにInitMapが左側にならない場合は初期化処理要
  */
 
 class InitVal{
@@ -65,66 +70,76 @@ class InitMap:public InitVal{
 public:
     T val;
     InitMap():val(InitVal()){}
+    InitMap(T init):val(init){};
     static T GetInitVal(){ return InitVal(); }
     static void SetInitVal(T init){ InitVal::SetVal(init); }
-    T& operator = (const T& o){ return val = o; }
-    const T& operator + (const T& o)const { return T(val+o);}
-    const T& operator - (const T& o)const { return T(val-o); }
-    const T& operator * (const T& o)const { return T(val*o);}
-    const T& operator / (const T& o)const { return T(val/o);}
-    T& operator += (const T& o){ return val += o; }
-    T& operator -= (const T& o){return val-= o;}
-    T& operator *= (const T& o){ return val *= o;}
-    T& operator /= (const T& o){ return val/=o;}
+    
+    InitMap<T>& operator = (const T& o){ val = o; return (*this); }
+    InitMap<T>& operator = (const InitMap<T>& o){ val = o.val; return (*this); }
+
+    const InitMap<T> operator + (const T& o)const { return InitMap<T>(val+o);}
+    const InitMap<T> operator + (const InitMap<T>& o) const{ return InitMap<T>(val+o.val);}
+    const InitMap<T> operator - (const T& o)const { return InitMap<T>(val-o); }
+    const InitMap<T> operator - (const InitMap<T>& o) const{ return InitMap<T>(val-o.val); }
+    const InitMap<T> operator * (const T& o)const { return InitMap<T>(val*o);}
+    const InitMap<T> operator * (const InitMap<T>& o) const{ return InitMap<T>(val*o.val); }
+    const InitMap<T> operator / (const T& o)const { return InitMap<T>(val/o); }
+    const InitMap<T> operator / (const InitMap<T>& o) const{ return InitMap<T>(val/o.val); }
+    const InitMap<T> operator % (const T& o)const { return InitMap<T>(val%o); }
+    const InitMap<T> operator % (const InitMap<T>& o) const{ return InitMap<T>(val%o.val); }
+    
+    InitMap<T>& operator += (const T& o){ val+=o; return (*this); }
+    InitMap<T>& operator += (const InitMap<T>& o){ val+=o.val; return (*this); }
+    InitMap<T>& operator -= (const T& o){val-=o; return (*this);}
+    InitMap<T>& operator -= (const InitMap<T>& o){ val-=o.val; return (*this); }
+    InitMap<T>& operator *= (const T& o){ val*=o; return (*this);}
+    InitMap<T>& operator *= (const InitMap<T>& o){ val*=o.val; return (*this); }
+    InitMap<T>& operator /= (const T& o){ val/=o; return (*this);}
+    InitMap<T>& operator /= (const InitMap<T>& o){ val/=o.val; return (*this); }
+    InitMap<T>& operator %= (const T& o){ val%=o; return (*this);}
+    InitMap<T>& operator %= (const InitMap<T>& o){ val%=o.val; return (*this); }
+    
     bool operator == (const T& o) const { return val == o; }
+    bool operator == (const InitMap<T>& o) const { return val == o.val; }
     bool operator != (const T& o) const {return val!=o;}
+    bool operator != (const InitMap<T>& o) const { return val != o.val; }
     bool operator < (const T& o) const { return val < o; }
+    bool operator < (const InitMap<T>& o) const { return val < o.val; }
     bool operator <= (const T& o) const { return val <= o;}
+    bool operator <= (const InitMap<T>& o) const { return val <= o.val; }
     bool operator > (const T& o) const {  return val > o;}
+    bool operator > (const InitMap<T>& o) const { return val > o.val; }
     bool operator >= (const T& o) const { return val >= o;}
+    bool operator >= (const InitMap<T>& o) const { return val == o.val; }
 };
+template<typename T> ostream& operator << (ostream& out,const InitMap<T>& o){ out << o.val; return out;}
+template<typename T> istream& operator >> (istream& in, InitMap<T>& o){ in >> o.val; return in;}
 
 int main(void) {
     cin.tie(0); ios_base::sync_with_stdio(false);
 #define debug(x) cout << #x << ": " << x << endl
-    cout << InitMap<int>::GetInitVal() << endl;
-    InitMap<int>::SetInitVal(10);
-    cout << InitMap<int>::GetInitVal() << endl;
-    InitMap<int> a;
-    cout << a.GetInitVal() << endl;
-    debug(a.val);
-    InitMap<int>::SetInitVal(100);
-    InitMap<int> b;
-    cout << InitMap<int>::GetInitVal() << endl;
-    debug(b.val);
-    debug(a.val);
-    
     cout << string(20,'=') << endl;
-    
-    cout << InitMap<string>::GetInitVal() << endl;
-    InitMap<string>::SetInitVal(string(10,'#'));
-    cout << InitMap<string>::GetInitVal() << endl;
-    InitMap<string> s;
-    debug(s.val);
-    
-    cout << string(20,'=') << endl;
-    
     InitMap<int>::SetInitVal(INT_MAX);
     InitMap<long long>::SetInitVal(LLONG_MAX);
     cout << InitMap<int>::GetInitVal() << endl;
     cout << InitMap<long long>::GetInitVal() << endl;
-    
     cout << string(20,'=') << endl;
     
     InitMap<int>::SetInitVal(int(1e9));
     map<string,InitMap<int>> mp;
-    mp["a"] = 5;
-    debug(mp["a"].val);
-    debug(mp["INF"].val);
+    debug(mp["INF"]);
     
-    map<int,InitMap<int>> mp2;
-    mp2[100] = 1000;
-    debug(mp2[100].val);
-    debug(mp2[0].val);
+    mp["a"] = 25; mp["b"] = 10;
+    debug(mp["a"]); debug(mp["b"]);
+    mp["a"] = mp["a"] + 10 + mp["b"];// * 20;
+    mp["a"] = InitMap<int>(10) + mp["a"];
+    mp["c"] = mp["a"] + mp["b"];
+    cout << (InitMap<int>(45) == mp["a"]) << endl;
+    debug((mp["a"]+mp["b"]));
+    debug(mp["c"]);
+    mp["c"] *=10;
+    debug(mp["c"]);
+    auto x = mp["c"];
+    cout << x << " " << typeid(x).name() << endl;
     return 0;
 }

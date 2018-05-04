@@ -155,60 +155,61 @@ int is_in_polygon(const Polygon &poly, Point p) {
     }
     return eq(angle, 0) ? 0 : 2;
 }
-// 凸包 : 凸多角形のある一辺上にある点も含む
-Polygon convex_hull(vector<Point> ps) {
-	int n = (int)ps.size();
-	if (n < 3) return ps;
-	sort(ps.begin(), ps.end());
-	Polygon u = { ps[0], ps[1] }, l = { ps[n - 1],ps[n - 2] };
-	for (int i = 2; i < n; i++) {
-		for (int j = (int)u.size(); j >= 2 && ccw(u[j - 2], u[j - 1], ps[i]) >= 0;j--)u.pop_back();
-		u.push_back(ps[i]);
-	}
-	for (int i = n - 3;i >= 0;i--) {
-		for (int j = (int)l.size(); j >= 2 && ccw(l[j - 2], l[j - 1], ps[i]) >= 0;j--)l.pop_back();
-		l.push_back(ps[i]);
-	}
-	reverse(l.begin(), l.end());
-	for (int i = (int)u.size() - 2; i >= 1; i--)l.push_back(u[i]);
-	return l;
-}
+
 // 凸包 : 凸多角形のある一辺上にある点を含まない
-/*
 Polygon convex_hull(vector<Point> ps) {
-	int n = ps.size();
-	int k = 0;
-	sort(ps.begin(), ps.end());
-	Polygon ch(2 * n);
-	for (int i = 0; i < n; ch[k++] = ps[i++])
-		while (k >= 2 && ccw(ch[k - 2], ch[k - 1], ps[i]) <= 0) --k;
-	for (int i = n - 2, t = k + 1; i >= 0; ch[k++] = ps[i--])
-		while (k >= t && ccw(ch[k - 2], ch[k - 1], ps[i]) <= 0) --k;
-	ch.resize(k - 1);
-	return ch;
+    int n = (int)ps.size();
+    int k = 0;
+    sort(ps.begin(), ps.end());
+    Polygon ch(2 * n);
+    for (int i = 0; i < n; ch[k++] = ps[i++])
+        while (k >= 2 && ccw(ch[k - 2], ch[k - 1], ps[i]) <= 0) --k;
+    for (int i = n - 2, t = k + 1; i >= 0; ch[k++] = ps[i--])
+        while (k >= t && ccw(ch[k - 2], ch[k - 1], ps[i]) <= 0) --k;
+    ch.resize(k - 1);
+    return ch;
 }
-*/
+// 凸包 : 凸多角形のある一辺上にある点も含む
+Polygon convex_hull2(vector<Point> ps) {
+    int n = (int)ps.size();
+    if (n < 3) return ps;
+    sort(ps.begin(), ps.end());
+    Polygon u = { ps[0], ps[1] }, l = { ps[n - 1],ps[n - 2] };
+    for (int i = 2; i < n; i++) {
+        for (int j = (int)u.size(); j >= 2 && ccw(u[j - 2], u[j - 1], ps[i]) >= 0;j--)u.pop_back();
+        u.push_back(ps[i]);
+    }
+    for (int i = n - 3;i >= 0;i--) {
+        for (int j = (int)l.size(); j >= 2 && ccw(l[j - 2], l[j - 1], ps[i]) >= 0;j--)l.pop_back();
+        l.push_back(ps[i]);
+    }
+    reverse(l.begin(), l.end());
+    for (int i = (int)u.size() - 2; i >= 1; i--)l.push_back(u[i]);
+    return l;
+}
+
 // 凸多角形の直径
-ld convex_diameter(const Polygon& poly){
+pair<pll,ld> convex_diameter(const Polygon& poly){
     int n = (int)poly.size();
+    if(n == 2) return make_pair(pll(0,1),abs(poly[0]-poly[1]));
     int ii = 0, jj = 0;
     for(int i = 1;i < n;i++){
         if(poly[i].imag() > poly[ii].imag())ii = i;
         if(poly[i].imag() < poly[jj].imag())jj = i;
     }
-    ld res = abs(poly[ii] - poly[jj]);
-    
+    pll resp = make_pair(-1,-1);
+    ld resd = 0;
+
     int i, maxi,j,maxj;
     i = maxi = ii; j = maxj = jj;
-    do{
-        if(cross(poly[(i+1)%n] - poly[i],poly[(j+1)%n] - poly[j]) >= 0) j = (j+1)%n;
-        else i = (i+1)%n;
-        if(abs(poly[i] - poly[j]) > res){
-            res = abs(poly[i] - poly[j]);
-            maxi = i; maxj = j;
-        }
-    }while(i != ii || j != jj);
-    return res;
+    while(i != maxj || j != maxi){
+        ld cur = abs(poly[i] - poly[j]);
+        if(resd + eps < cur){ resd = cur; resp = pll(i,j); }
+        int di = (i+1)%n, dj = (j+1)%n;
+        if(cross(poly[di]-poly[i],poly[dj]-poly[j]) < 0) i = di;
+        else j = dj;
+    }
+    return make_pair(resp,resd);
 }
 // 凸カット
 Polygon convex_cut(const Polygon &ps, Line l) {
@@ -224,9 +225,24 @@ Polygon convex_cut(const Polygon &ps, Line l) {
     return Q;
 }
 
-int main(void) {
-    cin.tie(0); ios_base::sync_with_stdio(false);
-    return 0;
+// 円と多角形の共通部分
+double area_of_polygon_and_circle(const Polygon& poly, const Circle c) {
+    int n = (int)poly.size();
+    ld r = 0;
+    for (int i = n - 1, j = 0; j < n; i=j++) {
+        Point v = abs(poly[j] - poly[i]) / (poly[j] - poly[i]);
+        if (poly[j] == poly[i])continue;
+        assert(poly[j] != poly[i]);
+        Point a = (poly[i] - c.p)*v, b = (poly[j] - c.p)*v;
+        ld d = norm(c.r) - norm(a.imag());
+        if (abs(a.imag()) < eps) continue;
+        if (d < 0)d = 0;
+        d = sqrt(d);
+        double l, m;
+        r += norm(c.r)*((l = atan2(b.imag(), min(b.real(), -d)) - atan2(a.imag(), min(a.real(), -d)))
+                        + (m = atan2(b.imag(), max(b.real(), d)) - atan2(a.imag(), max(a.real(), d))))
+        + a.imag()*(min(d, max(a.real(), -d)) - max(-d, min(b.real(), d)));
+        assert(-pi < l && -pi < m && l < pi && m < pi);
+    }
+    return r / 2;
 }
-
-

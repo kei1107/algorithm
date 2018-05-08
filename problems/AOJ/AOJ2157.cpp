@@ -1,18 +1,32 @@
 #include "bits/stdc++.h"
 using namespace std;
+typedef long long ll;
+typedef pair<int, int> pii;
+typedef pair<ll, ll> pll;
+const int INF = 1e9;
+const ll LINF = 1e18;
+template<class S,class T> ostream& operator << (ostream& out,const pair<S,T>& o){ out << "(" << o.first << "," << o.second << ")"; return out; }
+template<class T> ostream& operator << (ostream& out,const vector<T> V){ for(int i = 0; i < V.size(); i++){ out << V[i]; if(i!=V.size()-1) out << " ";} return out; }
+template<class T> ostream& operator << (ostream& out,const vector<vector<T> > Mat){ for(int i = 0; i < Mat.size(); i++) { if(i != 0) out << endl; out << Mat[i];} return out; }
+template<class S,class T> ostream& operator << (ostream& out,const map<S,T> mp){ out << "{ "; for(auto it = mp.begin(); it != mp.end(); it++){ out << it->first << ":" << it->second; if(mp.size()-1 != distance(mp.begin(),it)) out << ", "; } out << " }"; return out; }
 
 /*
- 自作クラス
- mapで初期値をデフォルトコンストラクタ以外にしたい時に使用する
+ <url:http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=2157>
+ 問題文============================================================
+ 各セルに0-9の数字が見える状態になっている状態の長さkのダイヤルが二つある。
+ 数字の変更の仕方として、
  
- 標準型とInitMap<T>に置ける　標準型が左側になる処理を行っていないため
+ 任意の連続する区間の数字を全て同じ大きさ分だけ回転することができるとき、
+ ダイヤル１からダイヤル２への状態にするために必要な最小回転回数を求めよ
+ =================================================================
+ 解説=============================================================
  
- InitMap<int>(10) + x ( xはInitMap<int>の型)
- と行ったようにInitMapが左側にならない場合は初期化処理要
- 
- これにより、InitMapから値を標準型に代入する場合も
- int x = InitMap<int>(10).val
- と言った風に取り出す
+ この問題は愚直にやれば良い、
+ ただ、探索範囲を狭めるために、
+ 回転に関しては負の方向にx回転することは正の方向に10-x回転させることと同義であるということ、
+ また、幅優先探索の要領で探索すれば、初めてダイヤル２の状態となった時が最小回転回数にできるので、
+ 探索を打ち切れる
+ ================================================================
  */
 
 class InitVal{
@@ -80,7 +94,7 @@ public:
     
     InitMap<T>& operator = (const T& o){ val = o; return (*this); }
     InitMap<T>& operator = (const InitMap<T>& o){ val = o.val; return (*this); }
-
+    
     const InitMap<T> operator + (const T& o)const { return InitMap<T>(val+o);}
     const InitMap<T> operator + (const InitMap<T>& o) const{ return InitMap<T>(val+o.val);}
     const InitMap<T> operator - (const T& o)const { return InitMap<T>(val-o); }
@@ -119,31 +133,44 @@ public:
 template<typename T> ostream& operator << (ostream& out,const InitMap<T>& o){ out << o.val; return out;}
 template<typename T> istream& operator >> (istream& in, InitMap<T>& o){ in >> o.val; return in;}
 
+
+ll solve(ll k){
+    ll res = LINF;
+    string S,T; cin >> S >> T;
+    for(int i = 0; i < k;i++){ S[i] -= '0'; T[i] -= '0'; }
+    InitMap<int>::SetInitVal(INT_MAX);
+    
+    queue<string> q;
+    map<string,InitMap<int>> mp;
+    
+    mp[S] = 0;
+    q.push(S);
+    while(q.size()){
+        string s = q.front(); q.pop();
+        int dist = mp[s].val;
+        if(s == T){
+            res = dist;
+            break;
+        }
+        
+        int x = 0;
+        while(s[x] == T[x]) x++;
+        int diff = (T[x] - s[x] + 10)%10;
+        for(int i = x; i < k;i++){
+            (s[i] += diff)%=10;
+            if(mp[s] > dist + 1){
+                mp[s] = dist+1;
+                q.push(s);
+            }
+        }
+    }
+    return res;
+}
 int main(void) {
     cin.tie(0); ios_base::sync_with_stdio(false);
-#define debug(x) cout << #x << ": " << x << endl
-    cout << string(20,'=') << endl;
-    InitMap<int>::SetInitVal(INT_MAX);
-    InitMap<long long>::SetInitVal(LLONG_MAX);
-    cout << InitMap<int>::GetInitVal() << endl;
-    cout << InitMap<long long>::GetInitVal() << endl;
-    cout << string(20,'=') << endl;
-    
-    InitMap<int>::SetInitVal(int(1e9));
-    map<string,InitMap<int>> mp;
-    debug(mp["INF"]);
-    
-    mp["a"] = 25; mp["b"] = 10;
-    debug(mp["a"]); debug(mp["b"]);
-    mp["a"] = mp["a"] + 10 + mp["b"];// * 20;
-    mp["a"] = InitMap<int>(10) + mp["a"];
-    mp["c"] = mp["a"] + mp["b"];
-    cout << (InitMap<int>(45) == mp["a"]) << endl;
-    debug((mp["a"]+mp["b"]));
-    debug(mp["c"]);
-    mp["c"] *=10;
-    debug(mp["c"]);
-    auto x = mp["c"];
-    cout << x << " " << typeid(x).name() << endl;
+    ll k;
+    while(cin >> k,k){
+        cout << solve(k) << endl;
+    }
     return 0;
 }

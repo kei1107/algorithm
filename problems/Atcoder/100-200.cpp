@@ -5,9 +5,11 @@ typedef pair<int, int> pii;
 typedef pair<ll, ll> pll;
 const int INF = 1e9;
 const ll LINF = 1e18;
-template<class S,class T> ostream &operator << (ostream& out,const pair<S,T>& o){
-    out << "(" << o.first << "," << o.second << ")"; return out;
-}
+template<class S,class T> ostream& operator << (ostream& out,const pair<S,T>& o){ out << "(" << o.first << "," << o.second << ")"; return out; }
+template<class T> ostream& operator << (ostream& out,const vector<T> V){ for(int i = 0; i < V.size(); i++){ out << V[i]; if(i!=V.size()-1) out << " ";} return out; }
+template<class T> ostream& operator << (ostream& out,const vector<vector<T> > Mat){ for(int i = 0; i < Mat.size(); i++) { if(i != 0) out << endl; out << Mat[i];} return out; }
+template<class S,class T> ostream& operator << (ostream& out,const map<S,T> mp){ out << "{ "; for(auto it = mp.begin(); it != mp.end(); it++){ out << it->first << ":" << it->second; if(mp.size()-1 != distance(mp.begin(),it)) out << ", "; } out << " }"; return out; }
+
 /*
  Atcoder 100~200点代
  全部まとめる
@@ -154,8 +156,10 @@ template<class S,class T> ostream &operator << (ostream& out,const pair<S,T>& o)
 //void solve(){ll n,a,b;cin>>n>>a>>b;cout<<max(0LL,a+b-n)<<endl;}
 // https://dwacon2018-prelims.contest.atcoder.jp/tasks/dwacon2018_prelims_a
 //void solve(){string s;cin>>s;cout<<(s[0]==s[2]&&s[1]==s[3]?"Yes":"No")<<endl;}
-
-
+// https://beta.atcoder.jp/contests/abc093/tasks/abc093_a
+//void solve(){string s;cin>>s;bool f[26]={};for(auto c:s)f[c-'a']=true;cout << (f[0]&&f[1]&&f[2]?"Yes":"No")<<endl;}
+// https://beta.atcoder.jp/contests/abc096/tasks/abc096_a
+//void solve(){ll a,b; cin >> a >> b; if(a <= b) cout << a << endl; else cout << a-1 << endl;}
 
 /*
  *************************************************************************
@@ -275,7 +279,7 @@ template<class S,class T> ostream &operator << (ostream& out,const pair<S,T>& o)
 // https://abc091.contest.atcoder.jp/tasks/abc091_b
 //void solve(){set<string> s;map<string,ll> mp1,mp2;ll N,M;cin>>N;for(int i=0;i<N;i++){string str;cin>>str;s.insert(str);mp1[str]++;}cin>>M;for(int j=0;j<M;j++){string str;cin>>str;s.insert(str);mp2[str]++;}ll ans=0;for(auto it:s)ans=max(ans,mp1[it]-mp2[it]);cout<<ans<<endl;}
 // https://abc092.contest.atcoder.jp/tasks/abc092_b
-void solve(){ll N,D,X;cin>>N>>D>>X;vector<ll>A(N);for(auto& in:A)cin>>in;for(int i = 0; i < N;i++){ X+=(D-1)/A[i]+1;}cout<<X << endl;}
+// void solve(){ll N,D,X;cin>>N>>D>>X;vector<ll>A(N);for(auto& in:A)cin>>in;for(int i = 0; i < N;i++){ X+=(D-1)/A[i]+1;}cout<<X << endl;}
 // https://arc059.contest.atcoder.jp/tasks/arc059_a
 //void solve(){ll N;cin>>N;vector<ll>a(N);for(auto&in:a)cin>>in;ll ans=INF;ll t=0,ave=accumulate(a.begin(),a.end(),0LL)/N;for(int i=-1;i<=1;i++){t=0;for(auto v:a)t+=(ave+i-v)*(ave+i-v);ans=min(ans,t);}cout<<ans<<endl;}
 // https://arc070.contest.atcoder.jp/tasks/arc070_a
@@ -324,6 +328,10 @@ void solve(){ll N,D,X;cin>>N>>D>>X;vector<ll>A(N);for(auto& in:A)cin>>in;for(int
 //void solve(){ll X,K;cin>>X>>K;ll key=pow(10,K);ll ans=X+1;if(ans%key==0)cout << ans << endl; else cout << (ans/key + 1)*key << endl;}
 // https://yahoo-procon2017-qual.contest.atcoder.jp/tasks/yahoo_procon2017_qual_b
 //void solve(){ll N,K;cin>>N>>K;vector<ll>A(N);for(auto&in:A)cin>>in;sort(A.begin(),A.end());cout<<accumulate(A.begin(),A.begin()+K,0LL)+K*(K-1)/2<<endl;}
+// https://beta.atcoder.jp/contests/abc093/tasks/abc093_b
+//void solve(){ll A,B,K;cin>>A>>B>>K;vector<ll>ans;for(ll i=A;i<=min(A+K-1,B);i++)ans.push_back(i);for(ll i=B;i>=max(B-K+1,A);i--)ans.push_back(i);sort(ans.begin(),ans.end());ans.erase(unique(ans.begin(),ans.end()),ans.end());for(auto v:ans)cout<<v<<endl;}
+// https://beta.atcoder.jp/contests/abc096/tasks/abc096_b
+void solve(){ll A,B,C,K;cin>>A>>B>>C>>K;ll M=max({A,B,C});cout<<A+B+C-M+M*(1LL<<K)<<endl;}
 
 
 // Main function

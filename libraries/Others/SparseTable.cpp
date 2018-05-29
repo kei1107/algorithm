@@ -52,6 +52,7 @@ struct SparseTable{
             }
         }
     }
+    // [a,b)
     Type query(int a,int b){
         int l = b - a;
         return func(dat[idx[l]][a],dat[idx[l]][b-(1<<idx[l])]);

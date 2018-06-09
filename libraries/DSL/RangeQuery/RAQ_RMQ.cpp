@@ -1,3 +1,4 @@
+
 /*
  update : [s,t) に xを加算
  query  : [s,t) の　最大(小)値を出力する
@@ -15,6 +16,10 @@ struct SegTree {
         while (N < _N) N *= 2;
         node.resize(2 * N - 1, init_v);
         lazy.resize(2 * N - 1, init_v);
+    }
+    
+    ll merge(ll l,ll r){
+        return min(l,r);
     }
     
     void lazy_evaluate(int l, int r,int k){
@@ -38,7 +43,7 @@ struct SegTree {
         else {
             update(a, b, 2 * k + 1, l, (l + r) / 2, x);
             update(a, b, 2 * k + 2, (l + r) / 2, r, x);
-            node[k] = min(node[2 * k + 1],node[2 * k + 2]);
+            node[k] = merge(node[2 * k + 1],node[2 * k + 2]);
         }
     }
     
@@ -53,11 +58,10 @@ struct SegTree {
         else {
             ll vl = query(a, b, 2 * k + 1, l, (l + r) / 2);
             ll vr = query(a, b, 2 * k + 2, (l + r) / 2, r);
-            return min(vl, vr);
+            return merge(vl, vr);
         }
     }
 };
-
 // ======================================================== //
 
 // ver.2

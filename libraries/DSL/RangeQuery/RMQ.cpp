@@ -14,22 +14,25 @@ struct SegTree {
         node.resize(2 * N - 1, init_v);
     }
     
+    ll merge(ll l,ll r){
+        return min(l,r);
+    }
     void update(int k, ll val) {
         k += N - 1;
         node[k] = val;
         while (k) {
             k = (k - 1) / 2;
-            node[k] = min(node[2 * k + 1], node[2 * k + 2]);
+            node[k] = merge(node[2 * k + 1], node[2 * k + 2]);
         }
     }
+    ll query(int a,int b){ return query(a,b,0,0,N);}
     ll query(int a, int b, int k, int l, int r) {
         if (r <= a || b <= l) return init_v;
         if (a <= l && r <= b) return node[k];
         else {
             ll vl = query(a, b, 2 * k + 1, l, (l + r) / 2);
             ll vr = query(a, b, 2 * k + 2, (l + r) / 2, r);
-            return min(vl, vr);
+            return merge(vl, vr);
         }
     }
-    ll rmq(int a, int b) { return query(a, b, 0, 0, N); }
 };

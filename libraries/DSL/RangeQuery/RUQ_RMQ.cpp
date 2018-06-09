@@ -17,6 +17,10 @@ struct SegTree {
         lazy.resize(2 * N - 1, NIL);
     }
     
+    ll merge(ll l,ll r){
+        return min(l,r);
+    }
+    
     void lazy_evaluate(int k) {
         if (lazy[k] == NIL) return;
         node[k] = lazy[k];
@@ -43,7 +47,7 @@ struct SegTree {
             lazy_evaluate(k);
             ll vl = update(a, b, 2 * k + 1, l, (l + r) / 2, x);
             ll vr = update(a, b, 2 * k + 2, (l + r) / 2, r, x);
-            return node[k] = min(vl, vr);
+            return node[k] = merge(vl, vr);
         }
     }
     
@@ -59,7 +63,7 @@ struct SegTree {
             lazy_evaluate(k);
             ll vl = query(a, b, 2 * k + 1, l, (l + r) / 2);
             ll vr = query(a, b, 2 * k + 2, (l + r) / 2, r);
-            return min(vl, vr);
+            return merge(vl, vr);
         }
     }
 };

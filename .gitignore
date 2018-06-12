@@ -45,3 +45,4 @@ libraries/*/bits
 problems/*/bits
 libraries/*/template*
 problems/*/template*
+pyslackify.py

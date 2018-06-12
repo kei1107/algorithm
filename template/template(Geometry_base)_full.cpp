@@ -214,8 +214,8 @@ bool isConvex(const Polygon &poly){
     }
     return true;
 }
-// 円の内外判定
-//  2 => out : 0 => on : 1 => in
+// 点の内外判定
+//  0 => out : 1 => on : 2 => in
 int is_in_polygon(const Polygon &poly, Point p) {
     ld angle = 0;
     int n = (int)poly.size();

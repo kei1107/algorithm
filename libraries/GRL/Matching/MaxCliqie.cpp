@@ -15,35 +15,33 @@ template<class S,class T> ostream& operator << (ostream& out,const map<S,T> mp){
 // あるグラフにおいて完全グラフとなるような最大の部分グラフの大きさを求める
 // 補グラフでの最大安定集合問題と同値となる
 
-const int MAXN = 111;
+#define N 111
 struct MaxClique { // 0-base
-    typedef bitset<MAXN> Int;
-    Int linkto[MAXN], v[MAXN];
+    typedef bitset<N> Int;
+    Int linkto[N], v[N];
     int n;
     MaxClique(int n = 0){init(n);}
     void init(int _n) {
         n = _n;
         for (int i = 0; i < n; i++) {
-            linkto[i].reset();
-            v[i].reset();
+            linkto[i].reset(); v[i].reset();
         }
     }
     void addEdge(int a, int b) { v[a][b] = v[b][a] = 1; }
     int popcount(const Int& val){ return (int)val.count(); }
     int lowbit(const Int& val){
-        int ret = 0; while(!val[ret]){ret++; if(ret >= MAXN) break;} return ret;
+        int ret = 0; while(!val[ret]){ret++; if(ret >= N) break;} return ret;
         //return val._Find_first();
     }
-    int ans, stk[MAXN];
-    int id[MAXN], di[MAXN], deg[MAXN];
+    int ans, stk[N];
+    int id[N], di[N], deg[N];
 #undef N
     Int cans;
     void maxclique(int elem_num, Int candi) {
         if (elem_num > ans) {
             ans = elem_num;
             cans.reset();
-            for (int i = 0; i < elem_num; i++)
-                cans[id[stk[i]]] = 1;
+            for (int i = 0; i < elem_num; i++) cans[id[stk[i]]] = 1;
         }
         int potential = elem_num + popcount(candi);
         if (potential <= ans) return;

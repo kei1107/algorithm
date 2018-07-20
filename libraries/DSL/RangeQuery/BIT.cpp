@@ -19,8 +19,8 @@ struct BIT {
         }
     }
     
-    int sum(int x){
-        int ret = 0;
+    ll sum(int x){
+        ll ret = 0;
         while (x) {
             ret += bit[x];
             x &= (x - 1);

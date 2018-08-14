@@ -6,7 +6,27 @@ typedef pair<ll, ll> pll;
 #define INF 1<<30
 #define LINF 1LL<<60
 
+
+
+
+// =============== //
 /* output : 入力 n に対して1~nまでの自然数の中で n と互いに素なものの個数 */
+
+
+int Euler_Phi(int n) {
+    int res = n;
+    for (int i = 2; i * i <= n; i++) {
+        if (n % i == 0) {
+            res = res / i * (i - 1); // n (1 - 1/pk) = n - n/pk
+            while (n /= i, n % i == 0); //n を素因数分解
+        }
+    }
+    if (n != 1) res = res / n * (n - 1);
+    return res;
+}
+
+
+// ============== //
 
 vector<ll> PrimeFact(ll n){
     vector<ll> res;

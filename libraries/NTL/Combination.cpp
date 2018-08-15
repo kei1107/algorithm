@@ -1,11 +1,14 @@
-
+const ll MOD = 1e9+7; // 素数でなくても良い
+const ll MAX_N = 1e4;
 ll comb[MAX_N+1][MAX_N+1];
-for (int i = 0; i <= MAX_N; i++) {
-    for (int j = 0; j <= i; j++) {
-        if (j == 0 || j == i)
-            comb[i][j] = 1;
-        else
-            comb[i][j] = comb[i - 1][j - 1] + comb[i - 1][j];
+void init(){
+    for (int i = 0; i <= MAX_N; i++) {
+        for (int j = 0; j <= i; j++) {
+            if (j == 0 || j == i)
+                comb[i][j] = 1;
+            else
+                comb[i][j] = (comb[i - 1][j - 1] + comb[i - 1][j])%MOD; // オーバーフローしないならMODを取り除いても良い
+        }
     }
 }
 

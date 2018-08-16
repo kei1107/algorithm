@@ -12,7 +12,22 @@ void init(){
     }
 }
 
-＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+
+
+// C(n,m) = C(n,m-1) * (n-m+1) / m.
+// C(n,m) = C(n,n-m)
+
+// nCm O(m)
+ll C(int n,int m){
+    m = m<(n-m) ? m : (n-m);
+    if(m == 0) return 1;
+    ll ans = 1;
+    for(int i=1;i<=m;i++){
+        ans = ans * (n-i+1)/i;
+    }
+    return ans;
+}
+// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 
 
 const ll MAX_N = 3e6 + 10;
@@ -59,16 +74,17 @@ void init(){
     Inv_init();
     fact_init();
 }
-============================================================
-C(n,m) = C(n,m-1) * (n-m+1) / m.
-C(n,m) = C(n,n-m)
-
-ll C(int n,int m){
-    m = m<(n-m) ? m : (n-m);
-    if(m == 0) return 1;
-    ll ans = 1;
-    for(int i=1;i<=m;i++){
-        ans = ans *(n-i+1)/i;
+// ============================================================
+// 区別できるN個のものを、区別できないrグループに分けるパターンの数
+ll F[MAX_N][MAX_N];
+ll nFr(int n,int r){
+    return F[n][r];
+}
+void F_init(){
+    for(int i = 1; i < MAX_N;i++){
+        F[i][1] = F[i][i] = 1;
+        for(int j = 2; j < i;j++){
+            F[i][j] = (F[i-1][j-1] + j*F[i-1][j])%MOD;
+        }
     }
-    return ans;
 }

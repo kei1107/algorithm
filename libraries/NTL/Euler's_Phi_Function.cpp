@@ -13,18 +13,17 @@ typedef pair<ll, ll> pll;
 /* output : 入力 n に対して1~nまでの自然数の中で n と互いに素なものの個数 */
 
 
-int Euler_Phi(int n) {
-    int res = n;
-    for (int i = 2; i * i <= n; i++) {
-        if (n % i == 0) {
-            res = res / i * (i - 1); // n (1 - 1/pk) = n - n/pk
-            while (n /= i, n % i == 0); //n を素因数分解
+ll Euler_Phi(ll m) {
+    if(m==0)return 0;
+    ll res = m;
+    for (ll i = 2; i * i <= m; i++) {
+        if (m % i == 0) {
+            res = res / i * (i - 1); while(m % i == 0) m/=i;
         }
     }
-    if (n != 1) res = res / n * (n - 1);
+    if (m != 1) res = res / m * (m - 1);
     return res;
 }
-
 
 // ============== //
 

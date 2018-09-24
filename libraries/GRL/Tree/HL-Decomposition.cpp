@@ -83,6 +83,11 @@ struct HLD{
         if(same(u,v)) return depth[u] < depth[v]?u:v;
         return lca(parent[group[u]],v);
     }
+    
+    TYPE distance(TYPE u,TYPE v){
+        return depth[u] + depth[v] - 2*depth[lca(u,v)];
+    }
+    
     pair<vector<PTT>,vector<PTT>> getPath(TYPE u,TYPE v){
         paths.clear(); Ledges.clear();
         buildPaths(u,v);

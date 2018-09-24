@@ -10,14 +10,19 @@ template<class T> ostream& operator << (ostream& out,const vector<T> V){ for(int
 template<class T> ostream& operator << (ostream& out,const vector<vector<T> > Mat){ for(int i = 0; i < Mat.size(); i++) { if(i != 0) out << endl; out << Mat[i];} return out; }
 template<class S,class T> ostream& operator << (ostream& out,const map<S,T> mp){ out << "{ "; for(auto it = mp.begin(); it != mp.end(); it++){ out << it->first << ":" << it->second; if(mp.size()-1 != distance(mp.begin(),it)) out << ", "; } out << " }"; return out; }
 
-
 // HL-Decomposition
 struct HLD{
     typedef ll TYPE;
     typedef pair<TYPE,TYPE> PTT;
     TYPE V; // 頂点数
-    TYPE root;
+    TYPE root; // 根の頂点番号
     vector<vector<TYPE>> G;
+    // parent : 親
+    // Hchild : Heavy Childの頂点番号
+    // number : 新しく割り当てた頂点番号
+    // id :  割り当て直した数字の元のノード番号 (id[number[pos]] = pos)
+    // group : 各ノードが属するグループ番号
+    // depth : 各頂点の深さ
     vector<TYPE> parent,Hchild,number,id,group,depth;
     vector<PTT> paths; // [u,v]間の経路を分解(最大でもlogN)
     vector<PTT> Ledges; // pathsを結ぶライドエッジ
@@ -83,11 +88,11 @@ struct HLD{
         if(same(u,v)) return depth[u] < depth[v]?u:v;
         return lca(parent[group[u]],v);
     }
-    
     TYPE distance(TYPE u,TYPE v){
         return depth[u] + depth[v] - 2*depth[lca(u,v)];
     }
     
+    // u<->vへのパス　、　u<->vをつなぐライトエッジを返却
     pair<vector<PTT>,vector<PTT>> getPath(TYPE u,TYPE v){
         paths.clear(); Ledges.clear();
         buildPaths(u,v);

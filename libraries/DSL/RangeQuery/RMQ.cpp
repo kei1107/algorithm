@@ -17,6 +17,14 @@ struct SegTree {
     ll merge(ll l,ll r){
         return min(l,r);
     }
+    void build(){
+        for(int k = N - 2; k >= 0; k--){
+            node[k] = merge(node[2*k+1],node[2*k+2]);
+        }
+    }
+    void direct_update(int k,ll v){
+        node[k+N-1] = v;
+    }
     void update(int k, ll val) {
         k += N - 1;
         node[k] = val;

@@ -41,6 +41,16 @@ struct SegTree {
         lazy[k] = 0;
     }
     
+    void direct_update(int k,pll v){
+        node[k+N-1].first = v.first;
+        node[k+N-1].second = v.second;
+    }
+    void build(){
+        for(int k = N - 2; k >= 0; k--){
+            node[k] = merge(node[2*k+1],node[2*k+2]);
+        }
+    }
+    
     /* [a,b) 引数の範囲に注意!! s~tまでを更新→update(s,t+1,~) */
     void update(int a, int b, ll x) { update(a, b, 0, 0, N, x); }
     void update(int a, int b, int k, int l, int r, ll x) {

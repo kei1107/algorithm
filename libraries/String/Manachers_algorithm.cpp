@@ -13,9 +13,17 @@ template<class S,class T> ostream& operator << (ostream& out,const map<S,T> mp){
 /*
  <ref:https://www.geeksforgeeks.org/manachers-algorithm-linear-time-longest-palindromic-substring-part-4/>
 Manacher’s Algorithm
- 文字列に含まれる最大部分文字列をO(|文字列長|)で探索する
+ 文字列から、文字列の区域iを中心とした場合の回文の最大半径を計算する
+
  
- ただし、1文字の時は例外
+    aba としたとき入力としたときLPSは左から順に
+ []aba
+ [a]ba
+ a[]ba
+ a[b]a
+ ab[]a
+ aba[]
+ を対象とする
  */
 struct Manacher{
     string text;
@@ -38,7 +46,7 @@ struct Manacher{
         N = 2*(int)text.length() + 1;
         LPS.clear(); LPS.resize(N); LPS[0] = 0; LPS[1] = 1;
         CP = 1; CR = 2; i = 0;
-        maxLPSLength = 0; maxLPSCenterPosition = 0;
+        maxLPSLength = 1; maxLPSCenterPosition = 1;
     }
     
     void fix(){
@@ -67,7 +75,7 @@ struct Manacher{
         end = start + maxLPSLength - 1;
         palindrome = text.substr(start,maxLPSLength);
     }
-    string get_palindrome(){
+    string get_Maxpalindrome(){
         return palindrome;
     }
 };
@@ -93,7 +101,8 @@ int main(void) {
     for(auto str:strs){
         manacher.init(str);
         manacher.fix();
-        cout << "LPS of string is " << str << " : " << manacher.get_palindrome() << endl;
+        cout << "LPS of string is " << str << " : " << manacher.get_Maxpalindrome() << endl;
+        cout << "LPS : " << manacher.LPS << endl;
     }
     
     return 0;

@@ -230,6 +230,7 @@ int is_in_polygon(const Polygon &poly, Point p) {
 // 凸包 : 凸多角形のある一辺上にある点を含まない
 Polygon convex_hull(vector<Point> ps) {
     int n = (int)ps.size();
+    if(n < 3) return ps;
     int k = 0;
     sort(ps.begin(), ps.end());
     Polygon ch(2 * n);

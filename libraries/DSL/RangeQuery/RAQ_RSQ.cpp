@@ -37,8 +37,8 @@ struct SegTree {
     }
     
     /* [a,b) 引数の範囲に注意!! s~tまでを更新→update(s,t+1,~) */
-    ll update(int a, int b, int x) { return update(a, b, 0, 0, N, x); }
-    ll update(int a, int b, int k, int l, int r, int x) {
+    ll update(int a, int b, ll x) { return update(a, b, 0, 0, N, x); }
+    ll update(int a, int b, int k, int l, int r, ll x) {
         if (r <= a || b <= l) {
             lazy_evaluate(k); // nodeを参照する前には必ず更新
             return node[k];

@@ -247,3 +247,32 @@ double area_of_polygon_and_circle(const Polygon& poly, const Circle c) {
     }
     return r / 2;
 }
+
+// 凸多角形と凸多角形のAND O(nm)ぐらい そのうち線形時間のやつも書く
+Polygon convex_polygon_and_convex_polygon(const Polygon& in1,const Polygon& in2){
+    Polygon ret;
+    if(in1.size()==0 || in2.size()==0) return ret;
+    Polygon ps1 = in1,ps2 = in2;
+    // ポリゴンを凸＋並びを揃える(反時計回り)　// この２点が保証されているのであればコメントアウト可
+    ps1 = convex_hull(in1);ps2 = convex_hull(in2);
+    int n = (int)ps1.size(),m = (int)ps2.size();
+    // p2に含まれるp1の点、p1に含まれるp2の点をそれぞれ探索する
+    vector<int> inpoint_of_ps1(n),inpoint_of_ps2(m);
+    for(int i = 0; i < n;i++) if(is_in_polygon(ps2, ps1[i])){ ret.push_back(ps1[i]); inpoint_of_ps1[i] = 1; }
+    for(int i = 0; i < m;i++) if(is_in_polygon(ps1, ps2[i])){ ret.push_back(ps2[i]); inpoint_of_ps2[i] = 1; }
+    
+    if(n>=2 && m >= 2){
+        // p1とp2が交わる点を探索する
+        for(int i = 0; i < n;i++){
+            Line l1(ps1[i],ps1[(i+1)%n]);
+            for(int j = 0; j < m;j++){
+                Line l2(ps2[j],ps2[(j+1)%m]);
+                if(dist_ss(l1,l2) < eps) ret.push_back(is_ll(l1,l2));
+            }
+        }
+    }
+    // ポリゴンを凸＋並びを揃える(反時計回り)
+    ret = convex_hull(ret);
+    
+    return ret;
+}

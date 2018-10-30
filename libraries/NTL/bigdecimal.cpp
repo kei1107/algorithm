@@ -63,7 +63,7 @@ public:
 };
 
 const long double EPSILON = 1e-22;
-template<int IntegerSize = 6, int DecimalSize = 9>
+template<int IntegerSize = 15, int DecimalSize = 15>
 class BigDecimal : public Arithmetic<BigDecimal<IntegerSize, DecimalSize>>, public Ordered<BigDecimal<IntegerSize, DecimalSize>> {
 private:
     const static int BitSize = 31;
@@ -577,7 +577,7 @@ BigDecimal<IntegerSize, DecimalSize> ceil(const BigDecimal<IntegerSize, DecimalS
 template<int IntegerSize, int DecimalSize>
 BigDecimal<IntegerSize, DecimalSize> floor(BigDecimal<IntegerSize, DecimalSize> x) {
     if (x.isMinus()) return -ceil(-x);
-    x += BigDecimal<IntegerSize, DecimalSize>::EPSILON;
+    x += EPSILON;
     for (int i = 0; i < DecimalSize; ++i) x.d[i] = 0;
     return x;
 }

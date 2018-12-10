@@ -19,6 +19,11 @@ template<class S,class T> ostream& operator << (ostream& out,const map<S,T> mp){
  解説=============================================================
  ================================================================
  */
+
+template<class T>
+T solve(T res){
+    return res;
+}
 int main(void) {
     cin.tie(0); ios_base::sync_with_stdio(false);
     return 0;

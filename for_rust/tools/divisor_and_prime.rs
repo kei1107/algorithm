@@ -13,6 +13,8 @@ while i * i <= n {
 ret.sort();
 ret
 }
+ let divisor:Vec<_> = (1..(N as f64).sqrt().ceil() as i64 + 1).filter(|&v| N%v==0).collect();
+ 
 
 // 素因数分解
 fn prime_fact(n: u64) -> Vec<u64> {

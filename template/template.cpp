@@ -12,11 +12,21 @@ template<class T> ostream& operator << (ostream& out,const vector<T> V){ for(int
 template<class T> ostream& operator << (ostream& out,const vector<vector<T> > Mat){ for(int i = 0; i < Mat.size(); i++) { if(i != 0) out << endl; out << Mat[i];} return out; }
 template<class S,class T> ostream& operator << (ostream& out,const map<S,T> mp){ out << "{ "; for(auto it = mp.begin(); it != mp.end(); it++){ out << it->first << ":" << it->second; if(mp.size()-1 != distance(mp.begin(),it)) out << ", "; } out << " }"; return out; }
 
-template<class T>
-T solve(T res){
+/*
+ <url:>
+ 問題文============================================================
+ =================================================================
+ 解説=============================================================
+ ================================================================
+ */
+
+template<class Type>
+Type solve(Type res = Type()){
     return res;
 }
 int main(void) {
-    cin.tie(0); ios_base::sync_with_stdio(false);
+    cin.tie(0); ios::sync_with_stdio(false);
+    //solve<ll>(0);
+    cout << fixed << setprecision(12) << solve<ll>() << endl;
     return 0;
 }

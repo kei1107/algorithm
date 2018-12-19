@@ -1,8 +1,9 @@
-#![allow(unused_mut, non_snake_case,unused_imports)]
+#![allow(unused_mut, non_snake_case, unused_imports)]
+
 use std::iter;
 use std::cmp::{max, min, Ordering};
-use std::mem::{swap};
-use std::collections::{HashMap,BTreeMap,HashSet,BTreeSet,BinaryHeap,VecDeque};
+use std::mem::swap;
+use std::collections::{HashMap, BTreeMap, HashSet, BTreeSet, BinaryHeap, VecDeque};
 use std::iter::FromIterator;
 
 //　高速 EOF要
@@ -14,15 +15,92 @@ macro_rules! input {(source = $s:expr, $($r:tt)*) => {let mut iter = $s.split_wh
 macro_rules! input_inner {($next:expr) => {};($next:expr, ) => {};($next:expr, $var:ident : $t:tt $($r:tt)*) => {let $var = read_value!($next, $t);input_inner!{$next $($r)*}};}
 macro_rules! read_value {($next:expr, ( $($t:tt),* )) => {( $(read_value!($next, $t)),* )};($next:expr, [ $t:tt ; $len:expr ]) => {(0..$len).map(|_| read_value!($next, $t)).collect::<Vec<_>>()};($next:expr, chars) => {read_value!($next, String).chars().collect::<Vec<char>>()};($next:expr, usize1) => {read_value!($next, usize) - 1};($next:expr, $t:ty) => {$next().parse::<$t>().expect("Parse error")};}
 
-// 非常時
-fn read_line() -> String{ let mut s = String::new(); std::io::stdin().read_line(&mut s).unwrap(); s.trim().to_string() }
-
 /*
- <url:>
+ <url:https://yukicoder.me/problems/no/366>
  問題文============================================================
  =================================================================
  解説=============================================================
+ 座圧して、小さい順に値を直しておき、
+ 左から順に埋めていけばいい
  ================================================================
  */
-fn main(){
+
+pub trait BinarySearch<T> {
+    fn lower_bound(&self, &T) -> usize;
+    fn upper_bound(&self, &T) -> usize;
+}
+
+impl<T: Ord> BinarySearch<T> for [T] {
+    fn lower_bound(&self, x: &T) -> usize {
+        let mut low = 0;
+        let mut high = self.len();
+
+        while low != high {
+            let mid = (low + high) / 2;
+            match self[mid].cmp(x) {
+                Ordering::Less => {
+                    low = mid + 1;
+                }
+                Ordering::Equal | Ordering::Greater => {
+                    high = mid;
+                }
+            }
+        }
+        low
+    }
+
+    fn upper_bound(&self, x: &T) -> usize {
+        let mut low = 0;
+        let mut high = self.len();
+
+        while low != high {
+            let mid = (low + high) / 2;
+            match self[mid].cmp(x) {
+                Ordering::Less | Ordering::Equal => {
+                    low = mid + 1;
+                }
+                Ordering::Greater => {
+                    high = mid;
+                }
+            }
+        }
+        low
+    }
+}
+
+fn main() {
+    input!(N:usize,K:usize,a:[usize;N]);
+    let N:usize = N;
+    let K:usize = K;
+    let mut a:Vec<usize> = a;
+
+    let mut t = a.clone();
+    t.sort();
+
+    for i in 0..N{
+        a[i] = t.lower_bound(&a[i]);
+    }
+    let mut ans = 0;
+    for i in 0..N{
+        if a[i] == i{ continue; }
+        let mut target = i;
+        while target < N{
+            if a[target] == i{
+                break;
+            }
+            target += K;
+        }
+        if target >= N{
+            println!("-1");
+            return;
+        }
+        while target != i{
+            ans += 1;
+            let t1 = a[target];
+            a[target] = a[target-K];
+            a[target-K] = t1;
+            target -= K;
+        }
+    }
+    println!("{}",ans);
 }

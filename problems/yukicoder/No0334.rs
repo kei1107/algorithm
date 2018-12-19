@@ -1,8 +1,9 @@
-#![allow(unused_mut, non_snake_case,unused_imports)]
+#![allow(unused_mut, non_snake_case, unused_imports)]
+
 use std::iter;
 use std::cmp::{max, min, Ordering};
-use std::mem::{swap};
-use std::collections::{HashMap,BTreeMap,HashSet,BTreeSet,BinaryHeap,VecDeque};
+use std::mem::swap;
+use std::collections::{HashMap, BTreeMap, HashSet, BTreeSet, BinaryHeap, VecDeque};
 use std::iter::FromIterator;
 
 //　高速 EOF要
@@ -14,15 +15,57 @@ macro_rules! input {(source = $s:expr, $($r:tt)*) => {let mut iter = $s.split_wh
 macro_rules! input_inner {($next:expr) => {};($next:expr, ) => {};($next:expr, $var:ident : $t:tt $($r:tt)*) => {let $var = read_value!($next, $t);input_inner!{$next $($r)*}};}
 macro_rules! read_value {($next:expr, ( $($t:tt),* )) => {( $(read_value!($next, $t)),* )};($next:expr, [ $t:tt ; $len:expr ]) => {(0..$len).map(|_| read_value!($next, $t)).collect::<Vec<_>>()};($next:expr, chars) => {read_value!($next, String).chars().collect::<Vec<char>>()};($next:expr, usize1) => {read_value!($next, usize) - 1};($next:expr, $t:ty) => {$next().parse::<$t>().expect("Parse error")};}
 
-// 非常時
-fn read_line() -> String{ let mut s = String::new(); std::io::stdin().read_line(&mut s).unwrap(); s.trim().to_string() }
-
 /*
- <url:>
+ <url:https://yukicoder.me/problems/no/334>
  問題文============================================================
  =================================================================
  解説=============================================================
+ 制約が小さいので愚直に探索しても間に合う
  ================================================================
  */
-fn main(){
+
+fn kadomatsu(a: usize, b: usize, c: usize) -> bool {
+    if b > a && b > c { return true; }
+    if b < a && b < c { return true; }
+    return false;
+}
+
+fn rec(state: usize, turn: bool, N: usize, K: &Vec<usize>) -> bool {
+    for i in 0..N {
+        if (state >> i & 1) == 1 { continue; }
+        for j in i + 1..N {
+            if (state >> j & 1) == 1 { continue; }
+            for k in j + 1..N {
+                if (state >> k & 1) == 1 { continue; }
+                let next_state = state + (1 << i) + (1 << j) + (1 << k);
+                if kadomatsu(K[i], K[j], K[k]) {
+                    if rec(next_state, !turn, N, &K) == turn {
+                        return turn;
+                    }
+                }
+            }
+        }
+    }
+
+    return !turn;
+}
+
+fn main() {
+    input!(N:usize,K:[usize;N]);
+    let N: usize = N;
+    let K: Vec<usize> = K;
+    for i in 0..N {
+        for j in i + 1..N {
+            for k in j + 1..N {
+                let state = (1 << i) + (1 << j) + (1 << k);
+                if kadomatsu(K[i], K[j], K[k]) {
+                    if rec(state, false, N, &K) {
+                        println!("{} {} {}", i, j, k);
+                        return;
+                    }
+                }
+            }
+        }
+    }
+    println!("-1");
 }

@@ -14,15 +14,18 @@ macro_rules! input {(source = $s:expr, $($r:tt)*) => {let mut iter = $s.split_wh
 macro_rules! input_inner {($next:expr) => {};($next:expr, ) => {};($next:expr, $var:ident : $t:tt $($r:tt)*) => {let $var = read_value!($next, $t);input_inner!{$next $($r)*}};}
 macro_rules! read_value {($next:expr, ( $($t:tt),* )) => {( $(read_value!($next, $t)),* )};($next:expr, [ $t:tt ; $len:expr ]) => {(0..$len).map(|_| read_value!($next, $t)).collect::<Vec<_>>()};($next:expr, chars) => {read_value!($next, String).chars().collect::<Vec<char>>()};($next:expr, usize1) => {read_value!($next, usize) - 1};($next:expr, $t:ty) => {$next().parse::<$t>().expect("Parse error")};}
 
-// 非常時
-fn read_line() -> String{ let mut s = String::new(); std::io::stdin().read_line(&mut s).unwrap(); s.trim().to_string() }
-
 /*
- <url:>
+ <url:https://yukicoder.me/problems/no/350>
  問題文============================================================
  =================================================================
  解説=============================================================
+
+ 誤差ゲー
+
+ 誤差に気をつけて計算
  ================================================================
  */
 fn main(){
+    input!(v:f64,t:f64);
+    println!("{}",(v*t + 1e-5) as i64);
 }

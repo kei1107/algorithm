@@ -1,4 +1,4 @@
-#![allow(unused_mut, non_snake_case,unused_imports)]
+#![allow(unused_mut, non_snake_case,unused_imports,dead_code)]
 use std::iter;
 use std::cmp::{max, min, Ordering};
 use std::mem::{swap};

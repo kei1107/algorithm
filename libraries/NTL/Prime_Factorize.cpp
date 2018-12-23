@@ -26,6 +26,23 @@ vector<ll> PrimeFact(ll n){
     }
     return res;
 }
+void PrimeFact(ll n,map<ll,ll>& mp){
+    while(n!=1){
+        if(n == 2 || n == 3){
+            mp[n]++; n/=n;
+            continue;
+        }
+        bool prime_flag = false;
+        for(ll i = 2;i*i <= n;i++){
+            if(n%i==0){
+                mp[i]++; n/=i;
+                prime_flag = true;
+                break;
+            }
+        }
+        if(!prime_flag){mp[n]++; n/= n;}
+    }
+}
 
 int main(void) {
     cin.tie(0); ios::sync_with_stdio(false);

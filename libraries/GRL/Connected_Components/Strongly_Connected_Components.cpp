@@ -36,7 +36,7 @@ public:
         for (TYPE& next : rG[u]){ if (visited[next] != 1) dfs2(next, group_num); }
     }
     
-    void make_group() {
+    void scc() {
         group.clear(); group.assign(V, -1);
         visited.clear(); visited.assign(V, 0);
         for (int i = 0; i < V;i++){ if (visited[i] != 1) dfs1(i); }

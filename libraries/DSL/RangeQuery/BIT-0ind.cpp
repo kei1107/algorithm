@@ -50,7 +50,7 @@ struct BIT0 { // 0-index
         if (w <= 0) return 0;
         int x = 0;
         for (int k = nn; k > 0; k /= 2) {
-            if (x + k <= N && data[x + k] < w) {
+            if (x + k < N && data[x + k] < w) {
                 w -= data[x + k];
                 x += k;
             }

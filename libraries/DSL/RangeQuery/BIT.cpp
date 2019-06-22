@@ -21,10 +21,15 @@ struct BIT {
     
     ll sum(int x){
         ll ret = 0;
+        if(x == 0) return ret;
         while (x) {
             ret += bit[x];
             x &= (x - 1);
         }
         return (ret);
+    }
+    // [l,r]
+    ll sum(int l,int r){
+        return sum(r) - sum(l-1);
     }
 };

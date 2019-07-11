@@ -1,3 +1,4 @@
+// 素数列挙
 const ll MAX_PRIME = 200000;
 vector<int> primes;
 vector<int> is_prime(MAX_PRIME + 1,true);

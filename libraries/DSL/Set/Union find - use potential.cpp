@@ -9,6 +9,10 @@ template<class S,class T> ostream &operator << (ostream& out,const pair<S,T>& o)
     out << "(" << o.first << "," << o.second << ")"; return out;
 }
 
+/*
+ 重み付きUnionFind
+ 辺の重さも状態として持つ
+ */
 const int MAX_UF = 110000;
 struct PotentialUnionFind{
     typedef ll TYPE;
@@ -41,7 +45,6 @@ struct PotentialUnionFind{
         par[y] = x; diff_weight[y] = w;
         return true;
     }
-    
     TYPE diff(TYPE x,TYPE y){ return weight(y) - weight(x); }
 };
 

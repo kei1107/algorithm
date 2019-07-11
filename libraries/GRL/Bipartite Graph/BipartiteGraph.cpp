@@ -12,12 +12,9 @@ template<class S,class T> ostream& operator << (ostream& out,const map<S,T> mp){
 
 
 /*
- 
  二部グラフ判定
- 
  build : falseならば二部グラフではない
  make : 色1となる頂点をlvへ、色-1となる頂点をrvへ格納
- 
 */
 class BipartiteGraph{
 public:

@@ -1,5 +1,6 @@
 
 /*
+ RAQ - RMQ
  update : [s,t) に xを加算
  query  : [s,t) の　最大(小)値を出力する
  */

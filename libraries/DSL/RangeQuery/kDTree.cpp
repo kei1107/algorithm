@@ -14,7 +14,7 @@
  3. query
  3-1. vector<Point> ans
  3-2. ans.clear()
- 3-3. find(root, sx, tx, sy, ty, 0, ans);
+ 3-3. find(root, sx, tx, sy, ty, 0, ans); // 閉区間
  
  4. output
  => ans
@@ -71,7 +71,6 @@ int makeKDTree(int l, int r, int depth) {
     
     return t;
 }
-
 void find(int v, int sx, int tx, int sy, int ty, int depth, vector<Point> &ans) {
     int x = P[T[v].location].x;
     int y = P[T[v].location].y;

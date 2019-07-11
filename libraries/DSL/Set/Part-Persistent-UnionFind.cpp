@@ -10,6 +10,11 @@ template<class T> ostream& operator << (ostream& out,const vector<T> V){ for(int
 template<class T> ostream& operator << (ostream& out,const vector<vector<T> > Mat){ for(int i = 0; i < Mat.size(); i++) { if(i != 0) out << endl; out << Mat[i];} return out; }
 template<class S,class T> ostream& operator << (ostream& out,const map<S,T> mp){ out << "{ "; for(auto it = mp.begin(); it != mp.end(); it++){ out << it->first << ":" << it->second; if(mp.size()-1 != distance(mp.begin(),it)) out << ", "; } out << " }"; return out; }
 
+/*
+ 部分永続UnionFind
+ Getnow := 最新の更新時間を返却
+ Tに確認したい状態の更新時間を与える
+ */
 class PartParsistentUnionFind{
     typedef pair<int,int> pii;
 private:

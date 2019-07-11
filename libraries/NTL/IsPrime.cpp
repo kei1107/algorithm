@@ -1,3 +1,4 @@
+// 単一素数判定
 bool IsPrime(int num)
 {
     if (num < 2) return false;

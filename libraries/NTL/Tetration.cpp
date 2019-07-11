@@ -1,3 +1,4 @@
+// Tetration a↑↑b mod m
 ll powmod(ll a,ll b,ll m) {ll res=1;a%=m;for(;b;b>>=1){if(b&1)res=res*a%m;a=a*a%m;}return res;}
 ll Euler_Phi(ll m) {
     if(m==0)return 0;
@@ -41,7 +42,6 @@ ll tetration(ll a,ll b,ll m){
 ll solve(){
     ll res = 0;
     ll A,N,M; cin >> A >> N >> M;
-    
     initPhi(M+1);
     res = tetration(A, N, M);
     return res;

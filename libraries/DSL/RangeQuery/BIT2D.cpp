@@ -1,5 +1,5 @@
 /*
- 1-index
+ BIT2D 1-index
  add : [s,t] に x を加算
  sum : [s,t] の総和を出力
  */

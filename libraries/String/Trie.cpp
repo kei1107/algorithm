@@ -6,7 +6,7 @@ typedef pair<ll, ll> pll;
 const int INF = 1e9;
 const ll LINF = 1e18;
 
-
+// Trie
 /*-----------------------------*/
 // Map[{l,k}] := cnt of a group of k strings such that they a common prefix of lenght l
 map<pii,int> Map;
@@ -137,7 +137,6 @@ void NPLFLF(){
             }
         }
     }
-    
 }
 int main() {
     cin.tie(0); ios::sync_with_stdio(false);

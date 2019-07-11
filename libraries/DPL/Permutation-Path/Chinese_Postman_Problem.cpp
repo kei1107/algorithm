@@ -12,6 +12,9 @@ Chinese Postman Problem <Undirected>
 Reference:<http://www.prefield.com/algorithm/graph/undirected_chinese_postman.html>
 */
 
+/*
+ 中国人郵便配達問題
+ */
 struct Edge {
 	int from, to, cost;
 	Edge(int from, int to, int cost) :from(from), to(to), cost(cost) {}

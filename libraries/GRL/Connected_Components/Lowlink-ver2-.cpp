@@ -4,14 +4,15 @@
 
 using namespace std;
 
+/*
+ Lowlink
+ */
 vector<int> G[1000000];
-vector<pair<int, int> > bridge;
-vector<int> articulation;
+vector<pair<int, int> > bridge; // 橋
+vector<int> articulation; // 間接点
 int ord[1000000], low[1000000];
 bool vis[1000000];
-
 // lowlink and determin bridge ,articulationpoint
-
 //if(ord[at] < low[n]) (n, at) is a bridge
 //if(at == 0) if(nG[at].size() > 1) at  is an articulation point
 //else if(ord[at] <= low[n]) at  is an articulation point

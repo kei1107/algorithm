@@ -10,9 +10,8 @@ typedef pair<ll, ll> pll;
 
 
 // =============== //
+// Euler's Phi function
 /* output : 入力 n に対して1~nまでの自然数の中で n と互いに素なものの個数 */
-
-
 ll Euler_Phi(ll m) {
     if(m==0)return 0;
     ll res = m;

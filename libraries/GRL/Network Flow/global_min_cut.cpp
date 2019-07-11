@@ -32,7 +32,10 @@ typedef pair<ll, ll> pll;
 /*
 <url:https://www.slideshare.net/hcpc_hokudai/flow-cut>
 */
-
+/*
+ 全域最小カット
+ 正の重み付き無向グラフにおいて、グラフを任意に二分する時のカットの重みを最小にする
+ */
 ll global_min_cut(vector<vector<int> >& G){
     int n = (int)G.size(); ll res = LINF;
     vector<int> redV(n);

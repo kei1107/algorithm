@@ -10,9 +10,13 @@ template<class T> ostream& operator << (ostream& out,const vector<T> V){ for(int
 template<class T> ostream& operator << (ostream& out,const vector<vector<T> > Mat){ for(int i = 0; i < Mat.size(); i++) { if(i != 0) out << endl; out << Mat[i];} return out; }
 template<class S,class T> ostream& operator << (ostream& out,const map<S,T> mp){ out << "{ "; for(auto it = mp.begin(); it != mp.end(); it++){ out << it->first << ":" << it->second; if(mp.size()-1 != distance(mp.begin(),it)) out << ", "; } out << " }"; return out; }
 
-
+/*
+ 二重辺連結成分分解
+ 任意のある一辺を取り除いても連結である頂点集合への分解
+ 集合同士をつなげると木となる
+ */
 class BCC{
-private:
+public:
     typedef pair<int,int> pii;
     vector<vector<int>> G;
     
@@ -26,7 +30,6 @@ private:
     stack<int> roots; // 各二重辺連結成分を、DFS木の部分木として見た時の根の集合
     
     int N;
-public:
     BCC(int _N){init(_N);}
     void init(int _N){
         N = _N;

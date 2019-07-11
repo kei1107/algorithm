@@ -1,3 +1,6 @@
+/*
+ ミラーラビン素数判定法・ポラード・ロー素因数分解法
+ */
 // return (a * b) % m
 ll mul_mod(ll a,ll b,ll m){
     ll res = 0;

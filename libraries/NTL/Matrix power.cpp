@@ -1,3 +1,7 @@
+/*
+ 行列累乗
+ */
+
 typedef vector<ll> vec;
 typedef vector<vec> mat;
 

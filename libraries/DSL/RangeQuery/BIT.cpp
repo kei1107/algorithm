@@ -1,6 +1,5 @@
 /*
- 1-index
- 
+ BIT 1-index
  add : x に valを加算
  sum : [1,x] の総和を出力
  */

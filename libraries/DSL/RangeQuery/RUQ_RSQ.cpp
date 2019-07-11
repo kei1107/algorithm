@@ -1,6 +1,7 @@
 /*
+ RUQ - RSQ
  update(s,t,x): [s,t) をxに変更する。
- find(s,t): [s,t) の総和を出力する。
+ query(s,t): [s,t) の総和を出力する。
  */
 
 const ll INIT = 0;

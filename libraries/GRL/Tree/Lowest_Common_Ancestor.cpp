@@ -6,6 +6,9 @@ typedef pair<ll, ll> pll;
 #define INF 1<<30
 #define LINF 1LL<<60
 
+/*
+ LCA V1
+ */
 class LCA{
 public:
     ll V; // 頂点数
@@ -105,7 +108,9 @@ template<class S,class T> ostream &operator << (ostream& out,const pair<S,T>& o)
     out << "(" << o.first << "," << o.second << ")"; return out;
 }
 
-
+/*
+ LCA V2
+ */
 struct edge{
     ll u,v,c;
     edge():u(0),v(0),c(0){}

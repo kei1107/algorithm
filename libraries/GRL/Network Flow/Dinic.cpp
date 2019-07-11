@@ -6,6 +6,9 @@ typedef pair<ll, ll> pll;
 const int INF = 1e9;
 const ll LINF = 1e18;
 
+/*
+ DINIC
+ */
 struct DINIC{
 #define MAX_V 5050
     typedef long long ll;

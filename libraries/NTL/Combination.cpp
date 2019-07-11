@@ -1,3 +1,7 @@
+/*
+ Combination
+ */
+
 const ll MOD = 1e9+7; // 素数でなくても良い
 const ll MAX_N = 1e4;
 ll comb[MAX_N+1][MAX_N+1];
@@ -28,8 +32,6 @@ ll C(int n,int m){
     return ans;
 }
 // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
-
-
 const ll MAX_N = 3e6 + 10;
 const ll MOD = 1e9+7;
 ll Inv[MAX_N];

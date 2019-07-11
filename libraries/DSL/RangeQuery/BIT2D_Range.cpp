@@ -12,7 +12,10 @@ template<class S,class T> ostream& operator << (ostream& out,const map<S,T> mp){
 
 
 // ==================== //
-
+/* BIT2D
+ rangeUpdate 閉区間
+ rangeSum 閉区間
+ */
 class BIT2D {
 private:
     int N, M;

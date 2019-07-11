@@ -1,4 +1,5 @@
 /*
+ RAQ-RSQ
  update : [s,t)にxを加算する
  query : [s,t) の総和を出力する
  */

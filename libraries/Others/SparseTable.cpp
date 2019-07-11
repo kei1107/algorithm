@@ -11,20 +11,12 @@ template<class T> ostream& operator << (ostream& out,const vector<vector<T> > Ma
 template<class S,class T> ostream& operator << (ostream& out,const map<S,T> mp){ out << "{ "; for(auto it = mp.begin(); it != mp.end(); it++){ out << it->first << ":" << it->second; if(mp.size()-1 != distance(mp.begin(),it)) out << ", "; } out << " }"; return out; }
 
 /*
- <url:https://beta.atcoder.jp/contests/arc023/tasks/arc023_4>
-
- SparseTable verify
- 
+ SparseTable
+ 区間に対する任意の処理を行える
  reference: https://github.com/beet-aizu/library/blob/master/sparsetable.cpp
- */
-
-/*
- gcd : 最大公約数
- lcm : 最小公倍数
  */
 inline ll gcd(ll a, ll b) { return b ? gcd(b, a%b) : a; }
 inline ll lcm(ll a, ll b) { return a / gcd(a, b)*b; }
-
 template<typename Type>
 struct SparseTable{
     using Func = function<Type(Type,Type)>;
@@ -58,7 +50,8 @@ struct SparseTable{
         return func(dat[idx[l]][a],dat[idx[l]][b-(1<<idx[l])]);
     }
 };
-
+// Verify
+//  <url:https://beta.atcoder.jp/contests/arc023/tasks/arc023_4>
 void solve(){
     int n,m; cin >> n >> m;
     vector<ll> a(n),x(m);

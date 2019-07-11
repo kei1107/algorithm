@@ -10,12 +10,13 @@ template<class T> ostream& operator << (ostream& out,const vector<T> V){ for(int
 template<class T> ostream& operator << (ostream& out,const vector<vector<T> > Mat){ for(int i = 0; i < Mat.size(); i++) { if(i != 0) out << endl; out << Mat[i];} return out; }
 template<class S,class T> ostream& operator << (ostream& out,const map<S,T> mp){ out << "{ "; for(auto it = mp.begin(); it != mp.end(); it++){ out << it->first << ":" << it->second; if(mp.size()-1 != distance(mp.begin(),it)) out << ", "; } out << " }"; return out; }
 
-
+/*
+ Range Inverse Query
+ */
 //typedef pair<int, int> P;
 const int MAX_N = 1 << 17;
 ll seg[MAX_N * 2];     // 区間内の1の個数
 ll lazy[MAX_N * 2];    // 後でノードを反転させるつもりがあるか
-
 // 遅延
 void lazy_evaluate(ll k, ll l, ll r) {
     // このノードを反転させるつもりがなかったなら何もしない
@@ -31,7 +32,6 @@ void lazy_evaluate(ll k, ll l, ll r) {
     // ノードkはもう反転させたので0にしておく
     lazy[k] = 0;
 }
-
 // 区間内のビットを反転させる
 void inv(ll a,ll b, ll k = 0, ll l = 0, ll r = MAX_N) {
     lazy_evaluate(k, l, r);
@@ -49,8 +49,6 @@ void inv(ll a,ll b, ll k = 0, ll l = 0, ll r = MAX_N) {
         seg[k] = seg[k * 2 + 1] + seg[k * 2 + 2];
     }
 }
-
-
 ll sum(ll a, ll b, ll k = 0, ll l = 0, ll r = MAX_N) {
     lazy_evaluate(k, l, r);
     // ノードが範囲外なら0を返す

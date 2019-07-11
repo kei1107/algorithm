@@ -14,9 +14,7 @@ template<class S,class T> ostream& operator << (ostream& out,const map<S,T> mp){
  <ref:https://www.geeksforgeeks.org/manachers-algorithm-linear-time-longest-palindromic-substring-part-4/>
 Manacher’s Algorithm
  文字列から、文字列の区域iを中心とした場合の回文の最大半径を計算する
-
- 
-    aba としたとき入力としたときLPSは左から順に
+ aba としたとき入力としたときLPSは左から順に
  []aba
  [a]ba
  a[]ba

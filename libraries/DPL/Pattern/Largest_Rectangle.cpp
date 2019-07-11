@@ -6,6 +6,9 @@ typedef pair<ll, ll> pll;
 #define INF 1<<30
 #define LINF 1LL<<60
 
+/*
+ 最大長方形
+ */
 struct Rectangle {
 	int h;
 	int p;  // position from left

@@ -18,6 +18,10 @@ template<class S,class T> ostream& operator << (ostream& out,const map<S,T> mp){
  ================================================================
  */
 
+
+/*
+ Bitonic-TSP
+ */
 typedef long double ld;
 typedef complex<ld> Point;
 const ld eps = 1e-9, pi = acos(-1.0);
@@ -39,6 +43,7 @@ ld solve(){
     
  
     // ==== Bitonic-TSP === //
+    // メイン処理部分
     sort(ps.begin(),ps.end());
     vector<vector<ld> > L(N, vector<ld>(N, 0.0));
     for (int j = 1; j < N; j++) {
@@ -55,12 +60,12 @@ ld solve(){
             }
         }
     }
+    // ==== Bitonic-TSP === //
     
     res = LINF;
     for (int k = 0; k < N-1; k++){
         res = min(res, L[k][N-1] + abs(ps[k]-ps[N-1]));
     }
-
     return res;
 }
 int main(void) {

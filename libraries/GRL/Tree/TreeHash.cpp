@@ -10,10 +10,10 @@ template<class T> ostream& operator << (ostream& out,const vector<T> V){ for(int
 template<class T> ostream& operator << (ostream& out,const vector<vector<T> > Mat){ for(int i = 0; i < Mat.size(); i++) { if(i != 0) out << endl; out << Mat[i];} return out; }
 template<class S,class T> ostream& operator << (ostream& out,const map<S,T> mp){ out << "{ "; for(auto it = mp.begin(); it != mp.end(); it++){ out << it->first << ":" << it->second; if(mp.size()-1 != distance(mp.begin(),it)) out << ", "; } out << " }"; return out; }
 
-
+/*
+ 木の同型判定
+ */
 // 森の部分木と与えられた根なし木の同型判定
-// <http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=2821>
-// ref : <http://chocobaby-aporo.hatenablog.com/entry/2017/12/05/233027>
 
 typedef vector<vector<int>> Graph;
 // 森から連結成分を取り出す

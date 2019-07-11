@@ -6,7 +6,9 @@ typedef pair<ll, ll> pll;
 #define INF 1<<30
 #define LINF 1LL<<60
 
-// 最長増加部分列
+/*
+ 最長増加部分列
+ */
 int main(void) {
 	cin.tie(0); ios::sync_with_stdio(false);
 	ll n; cin >> n;

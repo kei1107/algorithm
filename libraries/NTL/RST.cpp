@@ -1,14 +1,6 @@
 // ref : https://qiita.com/drken/items/ae02240cd1f8edfc86fd
 // ================================================= //
 
-inline ll mod(ll a,ll m){ return (a%m + m)%m;}
-/* 拡張ユークリッドの互除法 extgcd */
-ll extgcd(ll a, ll b, ll& x, ll& y){
-    ll g = a; x = 1; y = 0;
-    if(b!=0) { g = extgcd(b, a%b, y, x); y -= (a/b)*x;}
-    return g;
-}
-
 /*
  中国剰余定理 (Chinese Remainder Theorem)
  x ≡ b1 (mod. m1)
@@ -19,6 +11,13 @@ ll extgcd(ll a, ll b, ll& x, ll& y){
  
  答えを x ≡ r (mod. M) として、{r, M} をリターン, 存在しない場合は {0, -1} をリターン
  */
+inline ll mod(ll a,ll m){ return (a%m + m)%m;}
+/* 拡張ユークリッドの互除法 extgcd */
+ll extgcd(ll a, ll b, ll& x, ll& y){
+    ll g = a; x = 1; y = 0;
+    if(b!=0) { g = extgcd(b, a%b, y, x); y -= (a/b)*x;}
+    return g;
+}
 pll CRT(const vector<ll>& b,const vector<ll>& m){
     ll r = 0, M = 1;
     for(int i = 0; i < (int)b.size();i++){

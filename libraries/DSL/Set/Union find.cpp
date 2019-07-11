@@ -29,6 +29,9 @@ struct UnionFind{
 
 // =========================================================
 
+/*
+ UnionFind
+ */
 struct UnionFind {
     vector<int> data;
     UnionFind(int size) : data(size, -1) { }

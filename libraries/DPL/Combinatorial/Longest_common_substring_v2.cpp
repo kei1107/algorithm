@@ -21,7 +21,10 @@ template<class S,class T> ostream& operator << (ostream& out,const map<S,T> mp){
  ================================================================
  */
 
-// 互いの文字列で順序が一致する最大の部分列を取得
+
+/*
+ 最長共通部分列：互いの文字列で順序が一致する最大の部分列を取得(連続でなくてもいい)
+ */
 template<class Type>
 Type solve(Type res = Type()){
     string s,t; cin >> s >> t;

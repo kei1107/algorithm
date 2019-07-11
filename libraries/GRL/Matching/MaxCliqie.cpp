@@ -14,7 +14,6 @@ template<class S,class T> ostream& operator << (ostream& out,const map<S,T> mp){
 // 最大クリーク問題
 // あるグラフにおいて完全グラフとなるような最大の部分グラフの大きさを求める
 // 補グラフでの最大安定集合問題と同値となる
-
 #define N 111
 struct MaxClique { // 0-base
     typedef bitset<N> Int;

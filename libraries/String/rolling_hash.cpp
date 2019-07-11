@@ -1,3 +1,6 @@
+/*
+ Rolling hash
+ */
 struct RH {
     vector<unsigned long long> p,hash;
     void init(const string s) {

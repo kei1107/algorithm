@@ -1,6 +1,5 @@
-// <!!!!! http://tubo28.me/algorithm/minball/ !!!!!!>
-//    ↑ 元々あった場所!! 使い方も載ってる          
-
+// Minimum inclusion circle
+typedef Point P;
 template <class iter>
 std::pair<P, ld> min_ball(iter left, iter right, int seed = 1333) {
     const int n = right - left;

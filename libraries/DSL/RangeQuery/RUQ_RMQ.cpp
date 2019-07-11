@@ -1,6 +1,7 @@
 /*
+ RUQ-RMQ
  update(s,t,x): [s,t) をxに変更する。
- find(s,t): [s,t) の最小値を出力する。
+ query(s,t): [s,t) の最小値を出力する。
  */
 
 const ll INIT = INT_MAX;

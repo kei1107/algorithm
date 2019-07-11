@@ -1,4 +1,7 @@
-
+/*
+ PalindromicTree
+ 文字列に含まれるユニークな回文を求める
+ */
 struct PalindromicTree{
     struct Node{
         int start,end; // s[start,end] = 回文となる部分文字列
@@ -20,6 +23,7 @@ struct PalindromicTree{
     int currentNode; // 現在のノード番号
     
     PalindromicTree(){}
+    // str:対象となる文字列
     PalindromicTree(string& str){
         init(str);
     }
@@ -43,6 +47,8 @@ struct PalindromicTree{
         
         currentNode = 0;
     }
+    
+    // str[0] 〜 str[idx]まででPalindromic Treeを構築
     void insert(int idx){
         // STEP1
         // Search pattern : s[idx] X s[idx]
@@ -88,6 +94,8 @@ struct PalindromicTree{
         // suffixlinkを張る
         tree[currentNode].suffixEdge = tree[now].insertEdge[s[idx]];
     }
+    
+    // 文全ての文字に対してPalindromic_Treeを適用
     void fix(){
         for(int i = 0; i < s.length();i++) insert(i);
     }
@@ -113,13 +121,6 @@ struct PalindromicTree{
         cout << "input string : " << s << endl;
         for(int i = 0; i <= ptr;i++) datainfo(i);
     }
-    
-    // 出来る事.例
-    // 今後必要に応じて verifyできそうな問題が見つかったら適宜実装
-    // ユニークな回文を求める : データ見るだけ
-    // 特定の文字が最後になるような回文 : その文字の頂点からsuffixlinkをたどる
-    // 特定の位置が最後になるような回文の個数 : suffixlinkの深さを見る
-    // などなど
 };
 
 

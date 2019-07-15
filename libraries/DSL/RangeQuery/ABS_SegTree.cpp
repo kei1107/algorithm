@@ -6,14 +6,26 @@ template <typename Monoid>
 struct SegmentTree {
 public:
     using Type = typename Monoid::Type;
-    const int sz; // Array size
+    int sz; // Array size
     vector<Type>node;
-    SegmentTree(int n) :sz(n), node(2 * sz, Monoid::id()) {}
-    inline void update(int i, const Type val) {
-        i += sz;
-        node[i] = val;
-        while (i > 1) {
-            i >>= 1; node[i] = Monoid::op(node[i << 1], node[(i << 1) + 1]);
+    SegmentTree(int n){
+        sz = 1;
+        while(sz < n) sz <<= 1;
+        node.assign(2*sz,Monoid::id());
+    }
+    void set(int k,const Type& val){
+        node[k+sz] = val;
+    }
+    void build(){
+        for(int k = sz - 1; k > 0; k--){
+            node[k] = Monoid::op(node[2*k],node[2*k+1]);
+        }
+    }
+    inline void update(int k, const Type& val) {
+        k += sz;
+        node[k] = val;
+        while (k >>= 1) {
+            node[k] = Monoid::op(node[2*k], node[2*k+1]);
         }
     }
     inline Type query(int l, int r) {
@@ -27,16 +39,6 @@ public:
     }
     Type operator[](int i) { return node[i + sz]; }
 };
-struct Monoid {
-    using Type = ;/* Monoidに乗せる型 */
-    static Type id() { return ;/* モノイドの初期値 */;};
-    static Type op(const Type&l, const Type &r) {
-        Type ret;
-        /* マージ処理 */
-        return ret;
-    }
-};
-
 
 
 /*

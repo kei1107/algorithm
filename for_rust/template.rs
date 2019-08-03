@@ -1,8 +1,9 @@
-#![allow(unused_mut, non_snake_case,unused_imports,dead_code)]
+#![allow(unused_mut, non_snake_case, unused_imports, dead_code)]
+
 use std::iter;
 use std::cmp::{max, min, Ordering};
-use std::mem::{swap};
-use std::collections::{HashMap,BTreeMap,HashSet,BTreeSet,BinaryHeap,VecDeque};
+use std::mem::swap;
+use std::collections::{HashMap, BTreeMap, HashSet, BTreeSet, BinaryHeap, VecDeque};
 use std::iter::FromIterator;
 
 //　高速 EOF要
@@ -15,14 +16,17 @@ macro_rules! input_inner {($next:expr) => {};($next:expr, ) => {};($next:expr, $
 macro_rules! read_value {($next:expr, ( $($t:tt),* )) => {( $(read_value!($next, $t)),* )};($next:expr, [ $t:tt ; $len:expr ]) => {(0..$len).map(|_| read_value!($next, $t)).collect::<Vec<_>>()};($next:expr, chars) => {read_value!($next, String).chars().collect::<Vec<char>>()};($next:expr, usize1) => {read_value!($next, usize) - 1};($next:expr, $t:ty) => {$next().parse::<$t>().expect("Parse error")};}
 
 // 非常時
-fn read_line() -> String{ let mut s = String::new(); std::io::stdin().read_line(&mut s).unwrap(); s.trim().to_string() }
+fn read_line() -> String {
+    let mut s = String::new();
+    std::io::stdin().read_line(&mut s).unwrap();
+    s.trim().to_string()
+}
 
-/*
- <url:>
- 問題文============================================================
- =================================================================
- 解説=============================================================
- ================================================================
- */
-fn main(){
+fn solve(){
+
+}
+fn main() {
+    let stack_size = 104_857_600; // 100 MB
+    let thd = std::thread::Builder::new().stack_size(stack_size);
+    thd.spawn(|| solve()).unwrap().join().unwrap();
 }

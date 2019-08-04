@@ -40,6 +40,18 @@ public:
     Type operator[](int i) { return node[i + sz]; }
 };
 
+struct Monoid {
+    using Type = ;/* Monoidに乗せる型 */
+    static Type id() { return ; /* モノイドの初期値 */};
+    
+    // ================================================ //
+    //                              マージ処理                               //
+    // ================================================ //
+    static Type op(const Type&l, const Type &r) {
+        Type ret;
+        return ret;
+    }
+};
 
 /*
  Verify: http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=DSL_2_A&lang=jp

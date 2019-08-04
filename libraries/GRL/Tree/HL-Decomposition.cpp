@@ -103,6 +103,65 @@ struct HLD{
     bool same(TYPE a,TYPE b){return group[a] == group[b];}
 };
 
+/*
+ 使い方:イメージはこれがわかりやすい<https://ei1333.hateblo.jp/entry/2018/05/29/011140>
+ HLDの構成はいつもの形
+ 
+ HLD後の頂点番号はnumberに格納されるので、初期化等はこれを用いる
+ 
+ getPathでu<->vへのパス、u<->vをつなぐライトエッジを返却する。
+ 各頂点に対して操作を行うときは u<->vへのパスをそのまま使う
+ 
+ 各辺に対して操作を行うときは u<->vへのパスの最初の辺の開始点が余分になる為+1する
+ 具体的には
+ auto path = hld.getPath(0,u).first;
+ path[0].first++;
+ 
+ また、経路構成時の辺はある頂点からその親への移動が基となるように作られているので、
+ 辺u<->parent[u]に対して何かしらの初期値を与えたい場合はuすなわちnumber[u]に対して値を載せておく
+ 
+ ex.
+ ライトエッジは (parent[i],u)で与えられる
+ ヘビーエッジは(parent[parent[...parent[u]...]],u)
+ ※これは新しく割り当てた頂点番号で与えられるので注意
+ 
+ 
+ https://ei1333.hateblo.jp/entry/2018/05/29/011140の例だと
+ HLD hld(13);
+ hld.add_edge(0, 1);
+ hld.add_edge(0, 2);
+ hld.add_edge(0, 3);
+ hld.add_edge(1, 4);
+ hld.add_edge(1, 5);
+ hld.add_edge(4, 8);
+ hld.add_edge(4, 9);
+ hld.add_edge(2, 6);
+ hld.add_edge(6, 10);
+ hld.add_edge(6, 11);
+ hld.add_edge(6, 12);
+ hld.add_edge(3, 7);
+ 
+ hld.build();
+ 
+ cout << "parent" << endl;
+ cout << hld.parent << endl;
+ cout << "number" << endl;
+ cout << hld.number << endl;
+ cout << "id" << endl;
+ cout << hld.id << endl;
+ 
+ auto ps = hld.getPath(4, 12);
+ cout << ps.first << endl;
+ cout << ps.second << endl;
+ 
+ cout << "===" << endl;
+ ps = hld.getPath(12, 10);
+ cout << ps.first << endl;
+ cout << ps.second << endl;
+ 
+  でおおよそ分かる
+ 
+ */
 // ================================= //
 // use example
 

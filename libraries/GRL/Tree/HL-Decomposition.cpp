@@ -14,7 +14,7 @@ template<class S,class T> ostream& operator << (ostream& out,const map<S,T> mp){
  HL-Decomposition
  */
 struct HLD{
-    typedef ll TYPE;
+    typedef int TYPE;
     typedef pair<TYPE,TYPE> PTT;
     TYPE V; // 頂点数
     TYPE root; // 根の頂点番号
@@ -100,6 +100,18 @@ struct HLD{
         buildPaths(u,v);
         return make_pair(paths,Ledges);
     }
+    
+    void for_each_edge(int u,int v,const function<void(int,int)>& f){
+        paths.clear(); Ledges.clear();
+        buildPaths(u, v);
+        
+        paths[0].first++;
+        for(auto path:paths){
+            if(path.first > path.second) continue;
+            f(path.first,path.second);
+        }
+    }
+    
     bool same(TYPE a,TYPE b){return group[a] == group[b];}
 };
 
@@ -144,23 +156,23 @@ struct HLD{
  hld.build();
  
  cout << "parent" << endl;
- cout << hld.parent << endl;
+ // -1 0 0 0 1 1 2 3 4 4 6 6 6
  cout << "number" << endl;
- cout << hld.number << endl;
+ // 0 1 6 11 2 5 7 12 3 4 8 9 10
  cout << "id" << endl;
- cout << hld.id << endl;
+ // 0 1 4 8 9 5 2 6 10 11 12 3 7
  
  auto ps = hld.getPath(4, 12);
- cout << ps.first << endl;
- cout << ps.second << endl;
  
+ cout << ps.first << endl; // (0,2) (6,7) (10,10)
+ 
+ cout << ps.second << endl; // (0,6) (7,10)
  cout << "===" << endl;
  ps = hld.getPath(12, 10);
- cout << ps.first << endl;
- cout << ps.second << endl;
+ cout << ps.first << endl; // (7,8) (10,10)
+ cout << ps.second << endl; // (7,10)
  
   でおおよそ分かる
- 
  */
 // ================================= //
 // use example
@@ -323,9 +335,24 @@ void GRL_5_E(){
         if(com == 0){
             ll v,w; cin >> v >> w;
             query0(v,w);
+            
+            // or
+            
+            hld.for_each_edge(0, v, [&](int l,int r){
+                ST.update(l,r+1,w);
+            });
+            
         }else{
             ll u; cin >> u;
             cout << query1(u) << endl;
+            
+            // or
+            
+            ll ans = 0;
+            hld.for_each_edge(0, u, [&](int l,int r){
+                ans += ST.query(l,r+1);
+            });
+            cout << ans << endl;
         }
     }
 }

@@ -75,7 +75,7 @@ public:
         int l = -1,r = len+1;
         while(r-l>1){
             int m = (l+r)/2;
-            if(this->h(m) == b.h(m)){
+            if(this->h(l1,l1+m) == b.h(l2,l2+m)){
                 l = m;
             }else{
                 r = m;

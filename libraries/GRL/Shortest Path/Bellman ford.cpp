@@ -35,6 +35,7 @@ public:
         for (int i = 0; i < V;i++) {
             bool updated = true;
             for (int v = 0; v < V;v++) {
+                if(dist[v] == LINF) continue;
                 for (int j = 0; j < (int)G[v].size();j++){
                     edge& e = G[v][j];
                     if (dist[e.v] > dist[v] + e.cost) {

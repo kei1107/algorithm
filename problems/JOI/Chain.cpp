@@ -28,7 +28,8 @@ i番目のキャラクターの色がXとすると、i番目のキャラクターをX以外の色に変化させたと
 */
 int main(void) {
 	cin.tie(0); ios::sync_with_stdio(false);
-	ll N; cin >> N;
+	ll N;
+    while(cin >> N,N){
 	vector<ll> C(N);
 	for (int i = 0; i < N;i++) cin >> C[i];
 	ll res = INF;
@@ -66,5 +67,6 @@ int main(void) {
 		}
 	}
 	cout << res << endl;
+    }
 	return 0;
 }

@@ -1,4 +1,4 @@
-#include "bits/stdc++.h"
+ #include "bits/stdc++.h"
 using namespace std;
 typedef long long ll;
 typedef pair<int, int> pii;
@@ -42,7 +42,8 @@ ll dfs(ll x, ll y, ll dep) {
 
 int main(void) {
 	cin.tie(0); ios::sync_with_stdio(false);
-	ll m, n; cin >> m >> n;
+	ll m, n;
+    while(cin >> m >> n,m){
 	masu.assign(n + 2, vector<int>(m + 2, 0));
 	checked.assign(n + 2, vector<int>(m + 2, 0));
 	for (int i = 1; i <= n;i++) for (int j = 1; j <= m;j++) cin >> masu[i][j];
@@ -56,5 +57,6 @@ int main(void) {
 		}
 	}
 	cout << res << endl;
+    }
 	return 0;
 }

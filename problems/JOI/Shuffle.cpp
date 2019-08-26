@@ -19,7 +19,7 @@ const ll LINF = 1e16;
  という動作をm(<=5000)回した時
  
  上から数えて p 枚目から q 枚目のカードの中に含まれている番号が r 以下のカードの枚数を出力せよ．
-
+ 
  =================================================================
  解説=============================================================
  
@@ -39,68 +39,71 @@ const ll LINF = 1e16;
  */
 int main(void) {
     cin.tie(0); ios::sync_with_stdio(false);
-    int n,m; cin >> n >> m;
-    int p,q,r; cin >> p >> q >> r;
-    queue<pii> sec; sec.push(pii(1,n));
-    
-    vector<pii> A,B,C;
-    int CntA,CntB,CntC;
-    for(int _ = 0; _ < m; _++){
-        A.clear(); B.clear(); C.clear();
-        int x,y; cin >> x >> y;
-        CntA = x; CntB = y-x; CntC = n-y;
-        while(!sec.empty()){
-            pii s = sec.front(); sec.pop();
-            while(s.second != 0){
-                if(CntA != 0){
-                    A.push_back(pii(s.first,min(CntA,s.second)));
-                    if(CntA >= s.second){
-                        CntA -= s.second;
-                        s.first += s.second; s.second = 0;
+    int n,m;
+    while(cin >> n,n){
+        cin >> m;
+        int p,q,r; cin >> p >> q >> r;
+        queue<pii> sec; sec.push(pii(1,n));
+        
+        vector<pii> A,B,C;
+        int CntA,CntB,CntC;
+        for(int _ = 0; _ < m; _++){
+            A.clear(); B.clear(); C.clear();
+            int x,y; cin >> x >> y;
+            CntA = x; CntB = y-x; CntC = n-y;
+            while(!sec.empty()){
+                pii s = sec.front(); sec.pop();
+                while(s.second != 0){
+                    if(CntA != 0){
+                        A.push_back(pii(s.first,min(CntA,s.second)));
+                        if(CntA >= s.second){
+                            CntA -= s.second;
+                            s.first += s.second; s.second = 0;
+                        }else{
+                            s.first += CntA;
+                            s.second -= CntA; CntA = 0;
+                        }
+                    }else if(CntB != 0){
+                        B.push_back(pii(s.first,min(CntB,s.second)));
+                        if(CntB >= s.second){
+                            CntB -= s.second;
+                            s.first += s.second; s.second = 0;
+                        }else{
+                            s.first += CntB;
+                            s.second -= CntB; CntB = 0;
+                        }
                     }else{
-                        s.first += CntA;
-                        s.second -= CntA; CntA = 0;
-                    }
-                }else if(CntB != 0){
-                    B.push_back(pii(s.first,min(CntB,s.second)));
-                    if(CntB >= s.second){
-                        CntB -= s.second;
-                        s.first += s.second; s.second = 0;
-                    }else{
-                        s.first += CntB;
-                        s.second -= CntB; CntB = 0;
-                    }
-                }else{
-                    C.push_back(pii(s.first,min(CntC,s.second)));
-                    if(CntC >= s.second){
-                        CntC -= s.second;
-                        s.first += s.second; s.second = 0;
-                    }else{
-                        s.first += CntC;
-                        s.second -= CntC; CntC = 0;
+                        C.push_back(pii(s.first,min(CntC,s.second)));
+                        if(CntC >= s.second){
+                            CntC -= s.second;
+                            s.first += s.second; s.second = 0;
+                        }else{
+                            s.first += CntC;
+                            s.second -= CntC; CntC = 0;
+                        }
                     }
                 }
             }
+            
+            for(auto s:C) sec.push(s);
+            for(auto s:B) sec.push(s);
+            for(auto s:A) sec.push(s);
         }
         
-        for(auto s:C) sec.push(s);
-        for(auto s:B) sec.push(s);
-        for(auto s:A) sec.push(s);
-    }
-    
-    int ans = 0;
-    int l = 1;
-    while(!sec.empty()){
-        pii s = sec.front(); sec.pop();
-        for(int i = 0; i < s.second; i++){
-            if(p <= l && l <= q){
-                if(i + s.first <= r){
-                    ans++;
+        int ans = 0;
+        int l = 1;
+        while(!sec.empty()){
+            pii s = sec.front(); sec.pop();
+            for(int i = 0; i < s.second; i++){
+                if(p <= l && l <= q){
+                    if(i + s.first <= r){
+                        ans++;
+                    }
                 }
+                l++;
             }
-            l++;
         }
+        cout << ans << endl;
     }
-    cout << ans << endl;
     return 0;
 }

@@ -1,9 +1,8 @@
-use std::cmp::Ordering;
-
 /// Equivalent to std::lowerbound and std::upperbound in c++
+/// https://github.com/hatoo/competitive-rust-snippets/blob/master/src/binary_search.rs
 pub trait BinarySearch<T> {
-    fn lower_bound(&self, &T) -> usize;
-    fn upper_bound(&self, &T) -> usize;
+    fn lower_bound(&self, x: &T) -> usize;
+    fn upper_bound(&self, x: &T) -> usize;
 }
 
 impl<T: Ord> BinarySearch<T> for [T] {

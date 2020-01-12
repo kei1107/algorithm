@@ -1,4 +1,5 @@
 // Minimum inclusion circle
+// 返り値は [中心の座標,半径の"2乗"]のペア
 typedef Point P;
 template <class iter>
 std::pair<P, ld> min_ball(iter left, iter right, int seed = 1333) {

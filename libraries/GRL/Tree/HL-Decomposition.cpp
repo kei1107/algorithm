@@ -177,53 +177,6 @@ struct HLD{
 // ================================= //
 // use example
 
-/*
- update : [s,t)にxを加算する
- query : [s,t) の総和を出力する
- */
-const ll INIT = 0;
-struct SegTree {
-    int N;
-    ll init_v;
-    vector<ll> node, lazy;
-    SegTree(int _N):init_v(INIT) {
-        N = 1; while (N < _N) N *= 2;
-        node.resize(2 * N - 1, init_v); lazy.resize(2 * N - 1, init_v);
-    }
-    
-    void lazy_evaluate(int k) {
-        node[k] += lazy[k]; // add のため加算
-        if (k < N - 1) { lazy[2 * k + 1] += lazy[k] / 2; lazy[2 * k + 2] += lazy[k] / 2; }
-        lazy[k] = 0;
-    }
-    
-    /* [a,b) 引数の範囲に注意!! s~tまでを更新→update(s,t+1,~) */
-    ll update(int a, int b, int x) { return update(a, b, 0, 0, N, x); }
-    ll update(int a, int b, int k, int l, int r, int x) {
-        if (r <= a || b <= l) { lazy_evaluate(k); return node[k]; }
-        if (a <= l && r <= b) { lazy[k] += (r - l) * x; lazy_evaluate(k); return node[k]; }
-        else {
-            lazy_evaluate(k);
-            ll vl = update(a, b, 2 * k + 1, l, (l + r) / 2, x);
-            ll vr = update(a, b, 2 * k + 2, (l + r) / 2, r, x);
-            return node[k] = vl + vr;
-        }
-    }
-    
-    /* [a,b) 引数の範囲に注意!! */
-    ll query(int a, int b) { return query(a, b, 0, 0, N); }
-    ll query(int a, int b, int k, int l, int r) {
-        if (r <= a || b <= l) return init_v;
-        if (a <= l && r <= b) { lazy_evaluate(k); return node[k]; }
-        else {
-            lazy_evaluate(k);
-            ll vl = query(a, b, 2 * k + 1, l, (l + r) / 2);
-            ll vr = query(a, b, 2 * k + 2, (l + r) / 2, r);
-            return vl + vr;
-        }
-    }
-};
-
 
 // LCA : http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_5_C&lang=jp
 void GRL_5_C(){
@@ -256,7 +209,7 @@ void GRL_5_D(){
         }
     }
     hld.build();
-    SegTree ST(n);
+    SegTree ST(n); // RAQ_RSQ
     
     // add(v,w): 節点 v の親と、節点 v の間にある辺の重みを w 増加させる
     auto query0=[&](ll u,ll w){
@@ -305,7 +258,7 @@ void GRL_5_E(){
         }
     }
     hld.build();
-    SegTree ST(n);
+    SegTree ST(n); // RAQ_RSQ
     
     // add(v,w): 節点 v の親と、節点 v の間にある辺の重みを w 増加させる
     auto query0=[&](ll u,ll w){
@@ -357,6 +310,79 @@ void GRL_5_E(){
     }
 }
 
+// https://codeforces.com/contest/1296/problem/F
+void codeforces_Round617_F(){
+    int n; cin >> n;
+    map<pii,int> mp;
+    for(int i = 0; i < n-1;i++){
+        int a,b; cin >> a >> b;
+        a--; b--;
+        if(a > b) swap(a,b);
+        mp[pii(a,b)] = i;
+    }
+    
+    int m; cin >> m;
+    using Item = tuple<int,int,int>;
+    vector<Item> query(m);
+    for(int i = 0; i < m;i++){
+        int a,b,g; cin >> a >> b >> g;
+        a--; b--;
+        if(a > b) swap(a,b);
+        query[i] = Item(g,a,b);
+    }
+    sort(query.begin(),query.end());
+    
+    HLD hld(n);
+    for(auto p:mp){
+        hld.add_edge(p.first.first, p.first.second);
+    }
+    hld.build();
+    
+    SegTree ST(n); // RUQ_RM(in)Q
+    for(auto q:query){
+        int g,a,b; tie(g,a,b) = q;
+        
+        auto f = [&](int u,int v){
+            ST.update(u,v+1,g);
+        };
+        hld.for_each_edge(a, b, f);
+    }
+    
+    bool ng = false;
+    for(auto q:query){
+        int g,a,b; tie(g,a,b) = q;
+        
+        ll MIN = LINF;
+        auto f = [&](int u,int v){
+            MIN = min(MIN,ST.query(u,v+1));
+        };
+        hld.for_each_edge(a, b, f);
+        
+        if(g < MIN){
+            ng = true;
+            break;
+        }
+    }
+    
+    if(ng){
+        return vector<ll>{-1};
+    }
+    vector<ll> ans(n-1);
+    for(auto p:mp){
+        int id = p.second;
+        int u,v; tie(u,v) = p.first;
+        
+        auto f = [&](int u,int v){
+             ans[id] = ST.query(u,v+1);
+        };
+        hld.for_each_edge(u, v, f);
+        
+        if(ans[id] == INIT) ans[id] = 1;
+    }
+    cout << ans << endl;
+    
+}
+
 void test(){
     ll n; cin >> n;
     HLD hld(n);
@@ -397,7 +423,7 @@ int main(void) {
     //GRL_5_C();
     //GRL_5_D();
     //GRL_5_E();
-    
+    // codeforces_Round617_F()
     test();
     return 0;
 }

@@ -21,7 +21,7 @@ public:
     }
     unsigned long long h(int i)const{return hash[i];}
     unsigned long long h(int i,int j)const{return h(j)-h(i)*p[j-i];}
-    unsigned long long bach_h(int i)const { return h(n) - h(n-i)*p[n-(n-i)]; }
+    unsigned long long back_h(int i)const { return h(n) - h(n-i)*p[n-(n-i)]; }
 };
 
 // 高速(こどふぉ基準)
@@ -69,7 +69,7 @@ public:
         if(m==0) return h(j)-h(i)*p[j-i];
         else return (h(j)-h(i)*p[j-i]%m+m)%m;
     }
-    ull bach_h(int i)const { return h(n-i,n); }
+    ull back_h(int i)const { return h(n-i,n); }
     int LCP(const RH &b,int l1,int r1,int l2,int r2){
         int len = min(r1-l1,r2-l2);
         int l = -1,r = len+1;

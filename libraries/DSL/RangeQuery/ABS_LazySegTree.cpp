@@ -365,3 +365,84 @@ Type solve(Type res = Type()){
     }
     return res;
 }
+
+/* ======================================================================
+// Range Affine Range Sum
+/*
+ * update : l,r,b,c
+ *  区間[l,r) に対して ai <- b x ai + c
+ * query  : l,r
+ *  区間[l,r) の sum(a) mod m
+ * 
+ * 
+ * 要素   {x,y} : { 要素の総和, 区間の長さ}
+ * 作用素 {x,y} : { 乗数c, 加数d}
+ */
+const ll MOD = 998244353;
+struct Monoid {
+    using Type = pll;/* Monoidに乗せる型 */
+    static Type id() { return  {0,0}; /* モノイドの初期値 */};
+    static Type Nid() { return {1,0}; /* 遅延評価時の初期値 */}
+    static Type Qid() { return id(); /* 範囲外クエリ処理時の値 */}
+    
+    //  =========  //
+    //  マージ処理  //
+    //  =========  //
+
+    // 要素と要素のマージ
+    static Type op1(const Type&l, const Type &r) {
+        Type ret;
+        ret.first = (l.first + r.first)%MOD;
+        ret.second = l.second + r.second;
+        return ret;
+    }
+    
+    // 要素と作用素のマージ
+    static Type op2(const Type&l, const Type &r) {
+        Type ret;
+
+        ret.first = (l.first * r.first % MOD + l.second * r.second % MOD )%MOD;
+        ret.second = l.second;        
+        return ret;
+    }
+    
+    // 作用素と作用素のマージ
+    static Type op3(const Type&l, const Type &r) {
+        Type ret;
+
+        ret.first = (l.first * r.first) %MOD;
+        ret.second = (l.second * r.first + r.second)% MOD;
+
+        return ret;
+    }
+    
+    // 作用素を下に降ろす時に行う演算
+    // (第一引数は作用素のもとの値, 第二引数は降ろした後の区間の長さ)
+    static Type op4(const Type&l, const int &r) {
+        Type ret = l;
+        return ret;
+    }
+};
+// https://atcoder.jp/contests/practice2/tasks/practice2_k
+template<class Type>
+Type solve(Type res = Type()){
+    int N,Q; cin >> N >> Q;
+    LazySegmentTree<Monoid> LST(N);
+    for(int i = 0; i < N;i++){
+        int a; cin >> a;
+        LST.set(i,Monoid::Type(a,1));
+    }
+    LST.build();
+    for(int i = 0; i < Q;i++){
+        int t; cin >> t;
+
+        if(t == 0){
+            int l,r,c,d; cin >> l >> r >> c >> d;
+            LST.update(l,r,Monoid::Type(c,d));
+        }else{
+            int l,r; cin >> l >> r;
+            cout << LST.query(l,r).first << endl;
+        }
+    }
+    return res;
+}

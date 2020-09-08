@@ -6,13 +6,15 @@ class SCC {
 public:
     typedef int TYPE;
     TYPE V;
-    vector<vector<TYPE>> G;
-    vector<vector<TYPE>> rG;
-    vector<vector<TYPE>> group_G;
-    vector<vector<TYPE>> group_rG;
-    vector<TYPE> group;
+private:    
+    vector<vector<TYPE>> G;             // 入力グラフ
+    vector<vector<TYPE>> rG;            // 入力の逆辺グラフ
+    vector<vector<TYPE>> group_G;       // 強連結成分同士の有向辺グラフ
+    vector<vector<TYPE>> group_rG;      // 強連結成分同士の無向辺グラフ
+    vector<vector<TYPE>> each_group_G;  // 各強連結成分内のグラフ（トポロジカル順）
+    vector<TYPE> group;                 // 各頂点の強連結成分グループ番号
     vector<TYPE> List;
-    
+public:    
     vector<int> visited;
     int group_num;
     
@@ -37,6 +39,7 @@ public:
     
     void dfs2(TYPE u,TYPE group_num) {
         visited[u] = 1; group[u] = group_num;
+        each_group_G.back().emplace_back(u);
         for (TYPE& next : rG[u]){ if (visited[next] != 1) dfs2(next, group_num); }
     }
     
@@ -49,7 +52,14 @@ public:
         
         visited.clear(); visited.assign(V, 0);
         group_num = 0;
-        for (TYPE& v : List) { if (visited[v] != 1) dfs2(v, group_num++); }
+        for (TYPE& v : List) { 
+            if (visited[v] != 1){
+                each_group_G.emplace_back(vector<TYPE>());
+                dfs2(v, group_num++); 
+            }
+        }
+
+        make_group_graph();
     }
     
     void make_group_graph(){
@@ -74,4 +84,33 @@ public:
     vector<vector<TYPE>>& get_rG() { return rG; }
     vector<vector<TYPE>>& get_group_G() { return group_G; }
     vector<vector<TYPE>>& get_group_rG() { return group_rG; }
+    vector<vector<TYPE>>& get_each_group_G() { return each_group_G; }
 };
+
+// verified : https://atcoder.jp/contests/practice2/tasks/practice2_g
+template<class Type>
+Type solve(Type res = Type()){
+    int N,M; cin >> N >> M;
+    SCC scc(N);
+    for(int i = 0; i < M; i++){
+        int a,b; cin >> a >> b;
+        scc.add_edge(a,b);
+    }
+    scc.scc();
+    auto G = scc.get_each_group_G();
+
+    printf("%d\n",G.size());
+    for(auto g:G){
+
+        printf("%d ",g.size());
+        for(auto v:g) printf("%d ",v);
+        printf("\n");
+    }
+    return res;
+}
+int main(void) {
+    // cin.tie(0); ios::sync_with_stdio(false);
+    solve<ll>(0);
+    // cout << fixed << setprecision(12) << solve<ll>() << endl;
+    return 0;
+}

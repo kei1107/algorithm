@@ -446,3 +446,109 @@ Type solve(Type res = Type()){
     }
     return res;
 }
+
+/* ======================================================================
+// Range inverse bit Range inverse number
+/*
+ * ai ∈ {0 , 1 }
+ * update : l,r
+ *  区間[l,r) に対して ai <- 1 - ai に置き換える
+ * query  : l,r
+ *  区間[l,r) の 転倒数を求める
+ * 
+ * 要素     {zero, one, inverse,*} := {0の個数,1の個数,転倒数,x}
+ * 作用素   {*,*,*,flag} := {x,x,x,反転フラグ}
+ */
+
+struct Monoid {
+    using Type = tuple<ll,ll,ll,bool>;/* Monoidに乗せる型 */
+    static Type id() { return  Type(); /* モノイドの初期値 */};
+    static Type Nid() { return Type(); /* 遅延評価時の初期値 */}
+    static Type Qid() { return Type(); /* 範囲外クエリ処理時の値 */}
+    
+    //  =========  //
+    //  マージ処理  //
+    //  =========  //
+
+    // 要素と要素のマージ
+    static Type op1(const Type&l, const Type &r) {
+        Type ret;
+
+        ll lzero,rzero,lone,rone,linversion,rinversion;
+
+        tie(lzero,lone,linversion,ignore) = l;
+        tie(rzero,rone,rinversion,ignore) = r;
+
+        ret = Type(
+            lzero+rzero,
+            lone+rone,
+            linversion+rinversion + lone*rzero,
+            false
+            );
+        return ret;
+    }
+    
+    // 要素と作用素のマージ
+    static Type op2(const Type&l, const Type &r) {
+        Type ret;
+
+        if(!get<3>(r)) ret = l;
+        else{
+            ret = Type(
+                get<1>(l),
+                get<0>(l),
+                get<0>(l)*get<1>(l)-get<2>(l),
+                false
+            );
+        }
+        return ret;
+    }
+    
+    // 作用素と作用素のマージ
+    static Type op3(const Type&l, const Type &r) {
+        Type ret;
+        bool lflag = get<3>(l),rflag = get<3>(r);
+
+        ret = Type(
+            0,
+            0,
+            0,
+            (lflag && !rflag) || (!lflag && rflag)
+        );
+        return ret;
+    }
+    
+    // 作用素を下に降ろす時に行う演算
+    // (第一引数は作用素のもとの値, 第二引数は降ろした後の区間の長さ)
+    static Type op4(const Type&l, const int &r) {
+        Type ret = l;
+        return ret;
+    }
+};
+
+
+template<class Type>
+Type solve(Type res = Type()){
+    int N,Q; cin >> N >> Q;
+    LazySegmentTree<Monoid> LST(N);
+    for(int i = 0; i < N;i++){
+        int a; cin >> a;
+        if(a == 0){
+            LST.set(i,Monoid::Type(1,0,0,false));
+        }else{
+            LST.set(i,Monoid::Type(0,1,0,false));
+        }
+    }
+    LST.build();
+
+    for(int i = 0; i < Q;i++){
+        int t,l,r; cin >> t >> l >> r;
+        l--;
+        if(t == 1){
+            LST.update(l,r,Monoid::Type(0,0,0,true));
+        }else{
+            cout << get<2>(LST.query(l,r)) << endl;
+        }
+    }
+    return res;
+}

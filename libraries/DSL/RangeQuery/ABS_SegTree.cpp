@@ -127,7 +127,7 @@ struct Monoid {
     //  マージ処理  //
     //  =========  //
     static Type op(const Type&l, const Type &r) {
-        Type ret = max(l,r);
+        Type ret;
         return ret;
     }
 };

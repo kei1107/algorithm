@@ -294,15 +294,47 @@ std::vector<int> z_algorithm(const std::string& s) {
 }
 // END : z_algorithm
 // =============================================================== //
+// =============================================================== //
 // TEST
-
 
 // verified z_algorihtm : https://judge.yosupo.jp/problem/zalgorithm
 void test_z_algorithm(){
     string s; cin >> s;
     cout << z_algorithm(s) << endl;
 }
-// verified suffix_array, lcp_array, Number of Substrings : https://atcoder.jp/contests/practice2/tasks/practice2_i
+// verified suffix_array : https://judge.yosupo.jp/problem/suffixarray
+void test_sa(){
+    string s; cin >> s;
+    auto sa = suffix_array(s);
+    cout << sa << endl;
+}
+void test_sa_v2(){
+    string s = "mississippi";
+    vector<int> sa = suffix_array(s);
+    vector<int> answer = {
+        10,7,4,1,0,9,8,6,3,5,2
+    };
+    vector<string> answer_str = {
+        "i",
+        "ippi",
+        "issippi",
+        "ississippi",
+        "mississippi",
+        "pi",
+        "ppi",
+        "sippi",
+        "sissippi",
+        "ssippi",
+        "ssissippi"
+    };
+    cout << sa << endl;
+    assert(sa.size() == answer.size());
+    assert(sa == answer);
+    for (int i = 0; i < int(sa.size()); i++) {
+        assert(s.substr(sa[i]) == answer_str[i]);
+    }
+}
+// verified lcp_array, Number of Substrings : https://atcoder.jp/contests/practice2/tasks/practice2_i
 void test_sa_lcp(){
     string s; cin >> s;
     cout << get_number_of_substrings(s) << endl;
@@ -311,7 +343,9 @@ void test_sa_lcp(){
 int main(void) {
     cin.tie(0);
     ios::sync_with_stdio(false);
-    test_sa_lcp();
+    // test_sa();
+    test_sa_v2();
+    //test_sa_lcp();
     // cout << fixed << setprecision(12) << solve<ll>() << endl;
     return 0;
 }

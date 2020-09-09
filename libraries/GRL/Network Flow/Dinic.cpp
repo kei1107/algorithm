@@ -83,8 +83,9 @@ struct DINIC{
     };
     vector<pii> pos;
 
-    //  有方向グラフにのみ適用
-    //  各辺を {from,to,cap,flow:実際に流れた流量}として取り出す
+    //  有向グラフにのみ適用
+    //  各辺を {from,to,cap,flow:実際に流れた流量,コスト}として取り出す
+    //  無向グラフで利用する場合は、両方向からadd_(directed)_edgeをする。
     vector<edge_with_flow> edges(){
         vector<edge_with_flow> ret;
         for(int i = 0; i < (int)pos.size(); i++){

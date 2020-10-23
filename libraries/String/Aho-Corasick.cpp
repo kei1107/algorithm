@@ -15,7 +15,7 @@ public:
     struct PMA{
         PMA *fail;
         PMA *next[Alphabets];
-        vector<int> accepts; // accepts id
+        vector<int> accepts; // accepts id : trieでのleaf, 現ノードが末尾となる入力文字列のindex番号が返却される．
         PMA():fail(NULL){memset(next,0,sizeof next);}
         ~PMA() { delete fail; for(int i = 0; i < Alphabets ; i++) delete next[i];}
     };
@@ -63,6 +63,10 @@ public:
     }
     
     // target S , res:include id (exist or times). O( |S| + Σ|p[i]| )
+    // 探索対象文字列S中に，各入力文字列がいくつ現れるか
+    // if pattern = {"bbb", "bba", "bac"}, S = "bbabbbbac"
+    //    -> res = {2,2,1}
+    // test3
     PMA* match(PMA* pma, string &S, vector<int> &res){
         res.resize(PatternSize,0);
         for(int i = 0; i < (int)S.size(); i++){
@@ -79,6 +83,8 @@ public:
     }
     
     // on not need result
+    // 先頭の文字を最小限消してグラフに存在する次ノードへの移動
+    // 行き先が無い場合（全ての文字が消される場合）はrootへ戻る
     PMA* NextStep(PMA* pma, char cc){
         int c = cc- AlphabetBase;
         while(pma->next[c] == NULL )pma = pma->fail;
@@ -142,11 +148,13 @@ void test3(){
     Aho_Corasick Aho;
     vector<string>vs;
     vs.push_back("bbb");
+    vs.push_back("bba");
+    vs.push_back("bac");
     Aho.buildMPA(vs);
     Aho_Corasick::PMA *saveroot;
     saveroot = Aho.Root;
     vector<int>res;
-    string s = "bbb";
+    string s = "bbabbbbac";
     Aho.match(saveroot,s,res);
     
     for(int i = 0; i < (int)vs.size(); i++){

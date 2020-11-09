@@ -16,63 +16,37 @@ template<typename T,typename... Ts>auto make_v(size_t a,Ts... ts){return vector<
 template<typename T,typename V> typename enable_if<is_class<T>::value==0>::type fill_v(T &t,const V &v){t=v;}
 template<typename T,typename V> typename enable_if<is_class<T>::value!=0>::type fill_v(T &t,const V &v){for(auto &e:t) fill_v(e,v);}
 /*
- <url:https://atcoder.jp/contests/arc077/tasks/arc077_c>
+ <url:https://atcoder.jp/contests/abc180/tasks/abc180_e>
  問題文============================================================
- E - guruguru
+ E - Traveling Salesman among Aerial Cities
  =================================================================
  解説=============================================================
  ================================================================
  */
 
-template<class T>
-struct cum_sum_linear{
-    int n;
-    vector<T> x,a,b;
-    cum_sum_linear(int n_ = 0) : n(n_), x(n), a(n+1), b(n+1){}
-
-    // 区間[l,r)に対して、
-    // x_l += c , x_l+1 += c + d , x_l+2 = c + 2*d, x_l+r = c + (r-l)*d
-    // を加算する
-    void add(int l,int r, T c, T d){
-        a[l] += c; a[r] -= c;
-        a[l] -= d*l; a[r] += d*l;
-        b[l] += d; b[r] -= d;
-    }
-    void fix(){
-        for(int i = 0; i < n;i++){
-            x[i] = a[i] + b[i]*i;
-            a[i+1] += a[i];
-            b[i+1] += b[i];
-        }
-    }
-    T operator[](int i) const { return x[i]; }
-};
-
-
-
-// verified : ARC077 https://atcoder.jp/contests/arc077/tasks/arc077_c
 template<class Type>
 Type solve(Type res = Type()){
-    int n,m; cin >> n >> m;
-    vector<ll> a(n); for(auto& in:a) cin >> in;
+    int N; cin >> N;
+    vector<ll> X(N),Y(N),Z(N);
+    for(int i = 0; i < N;i++) cin >> X[i] >> Y[i] >> Z[i];
+    auto dp = make_v<ll>(1<<N,N);
+    fill_v(dp,LINF);
+    dp[0][0] = 0;
 
-    ll sum = 0;
-    cum_sum_linear<ll> x(2*m+1);
-    for(int i = 1; i < n;i++){
-        ll l = a[i-1], r = a[i];
-        if(r < l) r += m;
+    auto chmin = [](ll& l,const ll r){
+        l = min(l,r);
+    };
+    for(int i = 0; i < (1<<N);i++){
+        for(int j = 0; j < N;j++){
+            if(dp[i][j] == LINF) continue;
 
-        sum += r-l;
-
-        x.add(l+1,r+1,0,1);
+            for(int k = 0; k < N;k++){
+                if((i>>k)&1) continue;
+                chmin(dp[i|(1<<k)][k],dp[i][j] + abs(X[k]-X[j])+abs(Y[k]-Y[j]) + max(0LL,Z[k]-Z[j]));
+            }
+        }
     }
-    x.fix();
-
-    res = LINF;
-    for(int i = 1; i <= m;i++){
-        res = min(res,sum - x[i] - x[i+m]);
-    }
-
+    res = dp[(1<<N)-1][0];
     return res;
 }
 int main(void) {

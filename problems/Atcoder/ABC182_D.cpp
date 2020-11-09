@@ -16,63 +16,30 @@ template<typename T,typename... Ts>auto make_v(size_t a,Ts... ts){return vector<
 template<typename T,typename V> typename enable_if<is_class<T>::value==0>::type fill_v(T &t,const V &v){t=v;}
 template<typename T,typename V> typename enable_if<is_class<T>::value!=0>::type fill_v(T &t,const V &v){for(auto &e:t) fill_v(e,v);}
 /*
- <url:https://atcoder.jp/contests/arc077/tasks/arc077_c>
+ <url:https://atcoder.jp/contests/abc182/tasks/abc182_d>
  問題文============================================================
- E - guruguru
+ D - Wandering
  =================================================================
  解説=============================================================
  ================================================================
  */
 
-template<class T>
-struct cum_sum_linear{
-    int n;
-    vector<T> x,a,b;
-    cum_sum_linear(int n_ = 0) : n(n_), x(n), a(n+1), b(n+1){}
-
-    // 区間[l,r)に対して、
-    // x_l += c , x_l+1 += c + d , x_l+2 = c + 2*d, x_l+r = c + (r-l)*d
-    // を加算する
-    void add(int l,int r, T c, T d){
-        a[l] += c; a[r] -= c;
-        a[l] -= d*l; a[r] += d*l;
-        b[l] += d; b[r] -= d;
-    }
-    void fix(){
-        for(int i = 0; i < n;i++){
-            x[i] = a[i] + b[i]*i;
-            a[i+1] += a[i];
-            b[i+1] += b[i];
-        }
-    }
-    T operator[](int i) const { return x[i]; }
-};
-
-
-
-// verified : ARC077 https://atcoder.jp/contests/arc077/tasks/arc077_c
 template<class Type>
 Type solve(Type res = Type()){
-    int n,m; cin >> n >> m;
-    vector<ll> a(n); for(auto& in:a) cin >> in;
+    int N; cin >> N;
 
-    ll sum = 0;
-    cum_sum_linear<ll> x(2*m+1);
-    for(int i = 1; i < n;i++){
-        ll l = a[i-1], r = a[i];
-        if(r < l) r += m;
+    ll max_move = 0;
+    ll sum_move = 0;
+    ll now_p = 0;
+    for(int i = 0; i < N;i++){
+        ll A; cin >> A;
 
-        sum += r-l;
+        max_move = max(max_move,sum_move+A);
+        sum_move += A;
 
-        x.add(l+1,r+1,0,1);
+        res = max(res,now_p+max_move);
+        now_p += sum_move;
     }
-    x.fix();
-
-    res = LINF;
-    for(int i = 1; i <= m;i++){
-        res = min(res,sum - x[i] - x[i+m]);
-    }
-
     return res;
 }
 int main(void) {

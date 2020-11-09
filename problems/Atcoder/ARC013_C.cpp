@@ -16,68 +16,56 @@ template<typename T,typename... Ts>auto make_v(size_t a,Ts... ts){return vector<
 template<typename T,typename V> typename enable_if<is_class<T>::value==0>::type fill_v(T &t,const V &v){t=v;}
 template<typename T,typename V> typename enable_if<is_class<T>::value!=0>::type fill_v(T &t,const V &v){for(auto &e:t) fill_v(e,v);}
 /*
- <url:https://atcoder.jp/contests/arc077/tasks/arc077_c>
+ <url:https://atcoder.jp/contests/arc013/tasks/arc013_3>
  問題文============================================================
- E - guruguru
+ C - 笑いをとれるかな？ 
  =================================================================
  解説=============================================================
  ================================================================
  */
 
-template<class T>
-struct cum_sum_linear{
-    int n;
-    vector<T> x,a,b;
-    cum_sum_linear(int n_ = 0) : n(n_), x(n), a(n+1), b(n+1){}
-
-    // 区間[l,r)に対して、
-    // x_l += c , x_l+1 += c + d , x_l+2 = c + 2*d, x_l+r = c + (r-l)*d
-    // を加算する
-    void add(int l,int r, T c, T d){
-        a[l] += c; a[r] -= c;
-        a[l] -= d*l; a[r] += d*l;
-        b[l] += d; b[r] -= d;
-    }
-    void fix(){
-        for(int i = 0; i < n;i++){
-            x[i] = a[i] + b[i]*i;
-            a[i+1] += a[i];
-            b[i+1] += b[i];
-        }
-    }
-    T operator[](int i) const { return x[i]; }
-};
-
-
-
-// verified : ARC077 https://atcoder.jp/contests/arc077/tasks/arc077_c
 template<class Type>
 Type solve(Type res = Type()){
-    int n,m; cin >> n >> m;
-    vector<ll> a(n); for(auto& in:a) cin >> in;
+    int N; cin >> N;
 
-    ll sum = 0;
-    cum_sum_linear<ll> x(2*m+1);
-    for(int i = 1; i < n;i++){
-        ll l = a[i-1], r = a[i];
-        if(r < l) r += m;
+    vector<int> xors;
+    for(int i = 0; i < N;i++){
+        vector<int> XYZ(3);
+        for(auto& in:XYZ) cin >> in;
+        int M; cin >> M;
 
-        sum += r-l;
+        vector<pii> mm(3,pii(INF,0));
+        for(int j = 0; j < M;j++){
+            vector<int> xyz(3);
+            for(auto& in:xyz) cin >> in;
 
-        x.add(l+1,r+1,0,1);
+            for(int k = 0; k < 3;k++){
+                mm[k].first  = min(mm[k].first,xyz[k]);
+                mm[k].second = max(mm[k].second,xyz[k]);
+            }
+        }
+
+        // cout << mm << endl;
+        for(int k = 0; k < 3;k++){
+            xors.emplace_back(mm[k].first);
+            xors.emplace_back(XYZ[k]-mm[k].second-1);
+        }
     }
-    x.fix();
-
-    res = LINF;
-    for(int i = 1; i <= m;i++){
-        res = min(res,sum - x[i] - x[i+m]);
+    
+    int XOR = 0;
+    // cout << xors << endl;
+    for(auto val:xors){
+        // cout << XOR << " -> " << (XOR^val) << endl;
+        XOR ^= val;
     }
-
+    
+    if(XOR) return "WIN";
+    else return "LOSE";
     return res;
 }
 int main(void) {
     cin.tie(0); ios::sync_with_stdio(false);
     //solve<ll>(0);
-    cout << fixed << setprecision(12) << solve<ll>() << endl;
+    cout << fixed << setprecision(12) << solve<string>() << endl;
     return 0;
 }

@@ -16,63 +16,68 @@ template<typename T,typename... Ts>auto make_v(size_t a,Ts... ts){return vector<
 template<typename T,typename V> typename enable_if<is_class<T>::value==0>::type fill_v(T &t,const V &v){t=v;}
 template<typename T,typename V> typename enable_if<is_class<T>::value!=0>::type fill_v(T &t,const V &v){for(auto &e:t) fill_v(e,v);}
 /*
- <url:https://atcoder.jp/contests/arc077/tasks/arc077_c>
+ <url:https://atcoder.jp/contests/indeednow-quala/tasks/indeednow_2015_quala_4>
  問題文============================================================
- E - guruguru
+ D - パズル 
  =================================================================
  解説=============================================================
  ================================================================
  */
 
-template<class T>
-struct cum_sum_linear{
-    int n;
-    vector<T> x,a,b;
-    cum_sum_linear(int n_ = 0) : n(n_), x(n), a(n+1), b(n+1){}
-
-    // 区間[l,r)に対して、
-    // x_l += c , x_l+1 += c + d , x_l+2 = c + 2*d, x_l+r = c + (r-l)*d
-    // を加算する
-    void add(int l,int r, T c, T d){
-        a[l] += c; a[r] -= c;
-        a[l] -= d*l; a[r] += d*l;
-        b[l] += d; b[r] -= d;
-    }
-    void fix(){
-        for(int i = 0; i < n;i++){
-            x[i] = a[i] + b[i]*i;
-            a[i+1] += a[i];
-            b[i+1] += b[i];
-        }
-    }
-    T operator[](int i) const { return x[i]; }
-};
-
-
-
-// verified : ARC077 https://atcoder.jp/contests/arc077/tasks/arc077_c
 template<class Type>
 Type solve(Type res = Type()){
-    int n,m; cin >> n >> m;
-    vector<ll> a(n); for(auto& in:a) cin >> in;
+    int H,W; cin >> H >> W;
+    vector<int> c(H*W); for(auto& in:c) cin >> in;
+    vector<int> target(H*W);
+    iota(target.begin(),target.end(),1); 
+    target[H*W-1] = 0;
 
-    ll sum = 0;
-    cum_sum_linear<ll> x(2*m+1);
-    for(int i = 1; i < n;i++){
-        ll l = a[i-1], r = a[i];
-        if(r < l) r += m;
-
-        sum += r-l;
-
-        x.add(l+1,r+1,0,1);
+    int zero_pos = -1;
+    int need_num = 0;
+    for(int i = 0; i < H*W; i++){
+        if(c[i] == 0) zero_pos = i;
+        need_num += c[i] != target[i];
     }
-    x.fix();
+    assert(zero_pos >= 0);
 
-    res = LINF;
-    for(int i = 1; i <= m;i++){
-        res = min(res,sum - x[i] - x[i+m]);
-    }
+    map<pair<vector<int>,int>,int> mp;
+    for(int dep = 0; dep <= 24; dep++) mp[{target,dep}] = 0;
+    // mp[target] = 0;
 
+    int dir[4] = {1,0,-1,0};
+    function<int(vector<int>&,int,int,int)> dfs = [&](vector<int>& state,int id,int num,int dep){
+        auto key = make_pair(state,dep);
+        if(mp.count(key)){
+            return mp[key];
+        }
+        int& ret = mp[key];
+        ret = INF;
+        //if(dep == 24) return ret;
+        if(num > (24-dep)+1) return ret;
+
+        int x = id/W,y = id%W;
+        for(int k = 0; k < 4;k++){
+            int nx = x + dir[k];
+            int ny = y + dir[k^1];
+            if(nx < 0 || nx >= H || ny < 0 || ny >= W) continue;
+
+            int next_id = nx*W + ny;
+
+            int next_num = num;
+            
+            next_num += state[id]==target[id];
+            next_num += state[next_id]==target[next_id];
+
+            next_num -= state[id]==target[next_id];
+            next_num -= state[next_id]==target[id];
+
+            swap(state[id],state[next_id]);
+            ret = min(ret,dfs(state,next_id,next_num,dep+1)+1);
+            swap(state[id],state[next_id]);
+        }
+        return ret;
+    };
+    res = dfs(c,zero_pos,need_num,0);
     return res;
 }
 int main(void) {

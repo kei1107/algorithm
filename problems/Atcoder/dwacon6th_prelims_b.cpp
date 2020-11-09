@@ -16,63 +16,73 @@ template<typename T,typename... Ts>auto make_v(size_t a,Ts... ts){return vector<
 template<typename T,typename V> typename enable_if<is_class<T>::value==0>::type fill_v(T &t,const V &v){t=v;}
 template<typename T,typename V> typename enable_if<is_class<T>::value!=0>::type fill_v(T &t,const V &v){for(auto &e:t) fill_v(e,v);}
 /*
- <url:https://atcoder.jp/contests/arc077/tasks/arc077_c>
+ <url:https://atcoder.jp/contests/dwacon6th-prelims/tasks/dwacon6th_prelims_b>
  問題文============================================================
- E - guruguru
+ B - Fusing Slimes
  =================================================================
  解説=============================================================
  ================================================================
  */
 
-template<class T>
-struct cum_sum_linear{
-    int n;
-    vector<T> x,a,b;
-    cum_sum_linear(int n_ = 0) : n(n_), x(n), a(n+1), b(n+1){}
-
-    // 区間[l,r)に対して、
-    // x_l += c , x_l+1 += c + d , x_l+2 = c + 2*d, x_l+r = c + (r-l)*d
-    // を加算する
-    void add(int l,int r, T c, T d){
-        a[l] += c; a[r] -= c;
-        a[l] -= d*l; a[r] += d*l;
-        b[l] += d; b[r] -= d;
+const ll MAX_N = 3e6 + 10;
+const ll MOD = 1e9+7;
+ll Inv[MAX_N];
+ll fact[MAX_N];
+ll factInv[MAX_N];
+void Inv_init(){
+    Inv[1] = 1;
+    for(int i = 2; i < MAX_N; i++) {
+        Inv[i] = Inv[MOD%i] * (MOD - MOD/i) % MOD;
     }
-    void fix(){
-        for(int i = 0; i < n;i++){
-            x[i] = a[i] + b[i]*i;
-            a[i+1] += a[i];
-            b[i+1] += b[i];
-        }
+}
+void fact_init(){
+    fact[0] = fact[1] = factInv[0] = factInv[1] = 1;
+    for(int i = 2; i < MAX_N; i++){
+        fact[i] = (fact[i-1] * i) % MOD;
+        factInv[i] = (factInv[i-1] * Inv[i])%MOD;
     }
-    T operator[](int i) const { return x[i]; }
-};
+}
 
+// a^b % MOD;
+ll powmod(ll a,ll b) {ll res=1;a%=MOD; for(;b;b>>=1){if(b&1)res=res*a%MOD;a=a*a%MOD;}return res;}
+// 逆元 1/a % MOD
+ll inversemod(ll a) { return powmod(a,MOD - 2);}
 
+// 1 以上 N 以下の N 個の整数の中から，相異なる K 個の整数を選ぶパターンの数
+ll nCr(int n,int r) {
+    if(n < r) return 0;
+    return (fact[n] * (factInv[r] * factInv[n-r] % MOD)) % MOD;
+}
+// 1 以上 N 以下の N 個の整数の中から，相異なる K 個の整数を選び，順番に並べるパターンの数
+ll nPr(int n,int r){
+    if(n < r) return 0;
+    return (fact[n]*factInv[n-r])%MOD;
+}
+// 1 以上 N 以下の N 個の整数の中から，重複を許して K 個の整数を選ぶパターンの数
+ll nHr(int n,int r){
+    if(n == 0 && r == 0) return 1;
+    return nCr(n+r-1,r);
+}
 
-// verified : ARC077 https://atcoder.jp/contests/arc077/tasks/arc077_c
+void init(){
+    Inv_init();
+    fact_init();
+}
+
 template<class Type>
 Type solve(Type res = Type()){
-    int n,m; cin >> n >> m;
-    vector<ll> a(n); for(auto& in:a) cin >> in;
+    init();
 
-    ll sum = 0;
-    cum_sum_linear<ll> x(2*m+1);
-    for(int i = 1; i < n;i++){
-        ll l = a[i-1], r = a[i];
-        if(r < l) r += m;
+    int N; cin >> N;
+    vector<ll> x(N); for(auto& in:x) cin >> in;
 
-        sum += r-l;
-
-        x.add(l+1,r+1,0,1);
+    ll base = 0;
+    for(int i = 0; i < N-1; i++){
+        ll dx = x[i+1] - x[i];
+        (base += Inv[i+1])%= MOD;
+        (res += dx*base%MOD)%=MOD;
     }
-    x.fix();
-
-    res = LINF;
-    for(int i = 1; i <= m;i++){
-        res = min(res,sum - x[i] - x[i+m]);
-    }
-
+    (res *= fact[N-1])%=MOD;
     return res;
 }
 int main(void) {

@@ -44,6 +44,44 @@ ll solve(){
     return res.first;
 }
 
+// https://atcoder.jp/contests/abc193/tasks/abc193_e
+/*
+   a*x + b = c*y + d = t　となる最小の非負整数tを求めたい（x,yは変数）
+   ここで
+   t = a*x + b = b (mod a)
+   t = c*y = d = d (mod c)
+   として、中国剰余定理に帰着できる
+*/
+template<class Type>
+Type solve(Type res = Type()){
+    ll X,Y,P,Q; cin >> X >> Y >> P >> Q;
+
+    ll a = 2*X + 2*Y;
+    ll c = P + Q;
+
+    ll T = numeric_limits<ll>::max();
+    for(ll b = X; b < X+Y; b++){
+        for(ll d = P; d < P+Q; d++){
+
+            // a*x + b = c*y + d
+            // t = b (mod a)
+            // t = c (mod c)
+
+            auto ret = CRT(vector<ll>{b,d},vector<ll>{a,c});
+            if(ret.second == -1) continue;
+            T = min(T,ret.first);
+        }
+    }
+
+    if(T == numeric_limits<ll>::max()){
+        return "infinity";
+    }else{
+        return to_string(T);
+    }
+
+    return res;
+}
+
 
 // ============================================== //
 // 巨大な数字を扱う場合

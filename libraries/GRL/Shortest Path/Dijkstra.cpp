@@ -23,12 +23,12 @@ public:
         fill(dist.begin(),dist.end(),init_val);
     }
 
-    void add_directed_edge(size_t u,size_t v,CType cost){
+    void add_edge(size_t u,size_t v,CType cost){
         G[u].emplace_back(edge(u,v,cost));
     }
-    void add_undirected_biedge(size_t u,size_t v,CType cost){
-        add_directed_edge(u,v,cost);
-        add_directed_edge(v,u,cost);
+    void add_biedge(size_t u,size_t v,CType cost){
+        add_edge(u,v,cost);
+        add_edge(v,u,cost);
     }
 
     void fit(size_t root){
@@ -65,7 +65,7 @@ Type solve(Type res = Type()){
     for(int i = 0; i < M;i++){
         int A,B,C; cin >> A >> B >> C;
         A--; B--;
-        dijkstra.add_directed_edge(A,B,C);
+        dijkstra.add_edge(A,B,C);
         edges.emplace_back(A,B,C);
     }
 

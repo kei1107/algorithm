@@ -10,6 +10,7 @@ public:
 
     size_t V;
     size_t now_root;
+    CType INIT_V;
 
     vector<vector<edge>> G;
     vector<CType> dist;
@@ -20,6 +21,7 @@ public:
         init();
     }
     void init(CType init_val = numeric_limits<CType>::max()){
+        INIT_V = init_val;
         fill(dist.begin(),dist.end(),init_val);
     }
 
@@ -52,7 +54,6 @@ public:
     }
     CType operator[](int i) { return dist[i]; }
 };
-
 
 // verified : https://atcoder.jp/contests/abc191/tasks/abc191_e
 template<class Type>

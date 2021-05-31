@@ -10,6 +10,7 @@ public:
 
     size_t V;
     size_t now_root;
+    CType TYPE_INF;
 
     vector<vector<edge>> G;
     vector<CType> dist;
@@ -20,6 +21,7 @@ public:
         init();
     }
     void init(CType init_val = numeric_limits<CType>::max()){
+        TYPE_INF = init_val;
         fill(dist.begin(),dist.end(),init_val);
     }
 
